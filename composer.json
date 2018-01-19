@@ -1,0 +1,17 @@
+{
+  "name": "kdyckgre/328/final",
+  "authors": [
+    {
+      "name": "Kianna Dyck",
+      "email": "kdyck@mail.greenriver.edu"
+    },
+    {
+      "name": "Jennifer Shin",
+      "email": "jshin13@mail.greenriver.edu"
+    }
+
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  }
+}
