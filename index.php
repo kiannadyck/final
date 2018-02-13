@@ -13,6 +13,12 @@ $f3 = Base::instance();
 // Set debug level 0 = off, 3 = max level
 $f3->set('DEBUG', 3);
 
+$f3->set('options', array(
+        'deck1',
+        'deck2',
+        'deck3')
+);
+
 // Define a default route
 $f3->route('GET /', function() {
     $template = new Template();
