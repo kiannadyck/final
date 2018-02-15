@@ -1,0 +1,76 @@
+<!--
+    Kianna Dyck
+    Jen Shin
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required Meta Tags -->
+    <meta charset = "utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Flash Cards</title>
+
+    <!-- CSS Files-->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+<!--nav bar-->
+<nav class="navbar navbar-expand-lg navbar-light bg-light m-3">
+    <a class="navbar-brand" href="./">Flashcards</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="./">Current Decks<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="./create">Create New Deck</a>
+            <a class="nav-item nav-link active" href="./login">Login</a>
+            <a class="nav-item nav-link" href="./register">Create an account</a>
+            <a class="nav-item nav-link disabled" href="#">Disabled</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>Login to view/edit Flashcards (Testing Route)</h2>
+
+    <form action="#" method="post">
+        <div class="form-group">
+            <!-- These need styles and validation -->
+            <label class="form-control-label" for="username">Username</label>
+            <input class="form-control" type="text" name="username" id="username">
+
+            <label class="form-control-label" for="password">Password</label>
+            <input class="form-control" type="password" name="password" id="password">
+
+        </div>
+        <input type="submit" name="submit" value="Login">
+    </form>
+
+    <br>
+
+    <h4>New user?</h4>
+    <a href="./register">Sign up for an account!</a>
+
+</div> <!-- container -->
+
+
+
+<!-- Scripts -->
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!-- popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+<!-- bootstrap -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
