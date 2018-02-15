@@ -11,66 +11,55 @@
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-            <title>Home</title>
+            <title>Flash Cards</title>
 
             <!-- CSS Files-->
             <!-- Bootstrap -->
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-        <title>Flash Cards</title>
+
         </head>
 
     <body>
 
     <!--nav bar-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light m-3">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-                    <a class="nav-item nav-link" href="#">Features</a>
-                    <a class="nav-item nav-link" href="#">Pricing</a>
-                    <a class="nav-item nav-link disabled" href="#">Disabled</a>
-                </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light m-3">
+        <a class="navbar-brand" href="#">Navbar</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="#">Features</a>
+                <a class="nav-item nav-link" href="#">Pricing</a>
+                <a class="nav-item nav-link disabled" href="#">Disabled</a>
             </div>
-        </nav>
-        <div class="container">
+        </div>
+    </nav>
+    <div class="container">
 
-        <!--radio options for deck
-            <div class="input-group">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <input type="radio" aria-label="Radio button for following text input" value="<repeat}}">
-
-                    </div>
-                </div>
-                <input type="text" class="form-control" aria-label="Text input with radio button">
-            </div>-->
-
-            <!--select dropdown for deck-->
-            <div class="form-group">
-                <label for="exampleFormControlSelect1">Choose a deck</label>
-                <select class="form-control" id="exampleFormControlSelect1">
+        <!--select dropdown for deck-->
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Choose a deck</label>
+            <select class="form-control" id="exampleFormControlSelect1">
 
                 <repeat group ='{{ @options }}' value="{{ @option }}">
 
-                        <option>{{ @option }}</option>
+                    <option>{{ @option }}</option>
                 </repeat>
 
-                </select>
-            </div>
+            </select>
+        </div>
 
-            <div class="row mb-3">
-                <div class="col-3">
-                    <input type="radio" name="choice" value="edit"> Edit &nbsp;
-                    <input type="radio" name="choice" value="play"> Play Deck
-                </div>
-                <div class="text-right col-9">
-                    <input type="submit" name="submit" value="Submit">
-                </div>
+        <div class="row mb-3">
+            <div class="col-3">
+                <input type="radio" name="choice" value="edit"> Edit &nbsp;
+                <input type="radio" name="choice" value="play"> Play Deck
             </div>
+            <div class="text-right col-9">
+                <input type="submit" name="submit" value="Submit">
+            </div>
+        </div>
 
         <!--instructions-->
         <p>
@@ -78,10 +67,11 @@
 
 
 
-        </div> <!-- container -->
+    </div> <!-- container -->
 
 
-        <!-- Scripts -->
+
+    <!-- Scripts -->
         <!-- jQuery -->
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <!-- popper -->
