@@ -1,11 +1,12 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Kianna and Jen
  * Date: 2/23/18
  * Time: 12:13 PM
- *
+ * deck.php
  * This creates a Deck object;
+ *
+ * @author Kianna <kdyck@mail.greenriver.edu> and Jen <jshin13@mail.greenriver.edu>
+ * @copyright 2018
  */
 
 class Deck

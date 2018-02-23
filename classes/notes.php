@@ -1,9 +1,14 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Kianna and Jen
  * Date: 2/23/18
  * Time: 12:21 PM
+ * notes.php
+ *
+ * Instantiates a Notes deck. Extends from Deck.
+ * Holds an array of strings.
+ *
+ * @author Kianna <kdyck@mail.greenriver.edu> and Jen <jshin13@mail.greenriver.edu>
+ * @copyright 2018
  */
 
 class Notes extends Deck
@@ -23,6 +28,7 @@ class Notes extends Deck
     }
 
     /**
+     * Gets array of strings.
      * @return array strings
      */
 
@@ -32,6 +38,7 @@ class Notes extends Deck
     }
 
     /**
+     * Sets array of strings.
      * @param array $notes strings
      */
     public function setNotes($notes)
