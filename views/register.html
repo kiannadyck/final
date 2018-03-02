@@ -33,14 +33,30 @@
             <a class="nav-item nav-link" href="./create">Create New Deck</a>
             <a class="nav-item nav-link" href="./login">Login</a>
             <a class="nav-item nav-link active" href="./register">Create an account</a>
-            <a class="nav-item nav-link disabled" href="#">Disabled</a>
         </div>
     </div>
 </nav>
 
 <div class="container">
-    <h2>New User Registration (Testing Route)</h2>
+    <h2>New User Registration</h2>
 
+    <form action="#" method="post">
+        <div class="form-group">
+            <!-- These need styles and validation -->
+            <label class="form-control-label" for="username">Username</label>
+            <input class="form-control" type="text" name="username" id="username">
+
+            <label class="form-control-label" for="password">Password</label>
+            <input class="form-control" type="password" name="password" id="password">
+
+            <label class="form-control-label" for="password">Confirm Password</label>
+            <input class="form-control" type="password" name="password2" id="password2">
+
+        </div>
+        <div class="text-right">
+            <input type="submit" class="btn btn-primary" name="submit" value="Create Account">
+        </div>
+    </form>
 </div> <!-- container -->
 
 
