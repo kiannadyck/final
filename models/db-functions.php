@@ -17,3 +17,34 @@ function connect()
         return;
     }
 }
+
+function addNewUser()
+{
+    // first time registration
+}
+
+function getUser()
+{
+    // after login
+}
+
+function getUserDecks()
+{
+    // query database to get a user's collection of decks
+}
+
+function getDeckFlashcards()
+{
+    // after user selects a deck, get flashcards with that deck's id
+}
+
+function saveDeck()
+{
+    // save deck name & flashcards inside deck
+}
+
+// edit flashcards in deck (add/remove/update)
+function editDeck()
+{
+
+}
