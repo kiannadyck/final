@@ -92,7 +92,60 @@ $f3->route('GET /create', function($f3) {
 });
 
 // Define route for login
-$f3->route('GET /login', function($f3) {
+$f3->route('GET|POST /login', function($f3) {
+
+    global $dbh; // temp?
+    $email = "";
+    $password = "";
+
+    if(isset($_POST['submit'])) {
+        // get post variables (username,password,password2)
+        // Array ( [username] => Kianna [password] => 123 [password2] => 123 [submit] => Create Account )
+
+        $isValid = true;
+
+        if(!empty($_POST['username'])) {
+            $email = $_POST['username']; // email
+        } else {
+            echo "Please enter a username.";
+            $isValid = false;
+        }
+
+        if(!empty($_POST['password'])) {
+            $password = $_POST['password'];
+        } else {
+            echo "Please enter a password.";
+            $isValid = false;
+        }
+
+        if($isValid)
+        {
+            // check if username and password match stored credentials
+
+            // retrieve userid
+            $result = getUser($email);
+            if ($result == null) {
+                echo $email." does not exist.";
+            } else {
+                // check password
+                if ($result['password'] != sha1($password)) {
+                    echo "<p> From Database: ".$result['password']."</p>";
+                    echo sha1($password);
+
+                    echo "Password does not match.";
+                } else {
+                    $_SESSION['userId'] = $result['userId'];
+                    echo "<p> From Database: ".$result['password']."</p>";
+                    echo sha1($password);
+                }
+            }
+
+        }
+
+
+    } // isset
+
+
 
     $template = new Template();
     echo $template->render('views/login.html');
@@ -129,13 +182,14 @@ $f3->route('GET|POST /register', function($f3) {
         {
             // call function to addUser
             $success = addNewUser($email, $password);
-            echo $success;
 
             // if successful, get user id
             if($success)
             {
                 $_SESSION['userId'] = $dbh->lastInsertId();
-                echo $_SESSION['userId'];
+                echo "Account successfully created!";
+            } else {
+                echo "Username already in use.";
             }
         }
 

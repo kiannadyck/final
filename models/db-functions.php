@@ -36,37 +36,31 @@ function addNewUser($email, $password)
     // 4. execute the statement
     $success = $statement->execute();
 
-    // 5. Return the result
-//    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-//    print_r($result);
-
     return $success;
 
 }
 
-function getUser()
+function getUser($email)
 {
     // after login
-
     global $dbh;
 
     // 1. define the query
-    $sql = "SELECT * FROM student ORDER BY last, first";
+    $sql = "SELECT * FROM loginCredentials WHERE email = :username";
 
     // 2. prepare the statement
     $statement = $dbh->prepare($sql);
 
     // 3. bind parameters
+    $statement->bindParam(':username', $email, PDO::PARAM_STR);
 
     // 4. execute the statement
     $statement->execute();
 
     // 5. Return the result
-    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+    $result = $statement->fetch();
 
-//    print_r($result);
-
+    // returns userId
     return $result;
 
 
