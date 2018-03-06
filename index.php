@@ -99,7 +99,49 @@ $f3->route('GET /login', function($f3) {
 });
 
 // Define route for registration of new users
-$f3->route('GET /register', function($f3) {
+$f3->route('GET|POST /register', function($f3) {
+
+    global $dbh; // temp?
+
+    if(isset($_POST['submit'])) {
+        // get post variables (username,password,password2)
+        // Array ( [username] => Kianna [password] => 123 [password2] => 123 [submit] => Create Account )
+
+        $email = $_POST['username']; // email
+        $password = $_POST['password'];
+        $password2 = $_POST['password2'];
+        $isValid = true;
+
+        // validation (move to different page later)
+        // validate email
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            echo("$email is not a valid email address");
+            $isValid = false;
+        }
+
+        // validate password
+        if($password != $password2) {
+            echo("Passwords do not match.");
+            $isValid = false;
+        }
+
+        if($isValid)
+        {
+            // call function to addUser
+            $success = addNewUser($email, $password);
+            echo $success;
+
+            // if successful, get user id
+            if($success)
+            {
+                $_SESSION['userId'] = $dbh->lastInsertId();
+                echo $_SESSION['userId'];
+            }
+        }
+
+    }
+
+
 
     $template = new Template();
     echo $template->render('views/register.html');
