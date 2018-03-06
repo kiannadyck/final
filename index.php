@@ -11,11 +11,17 @@ error_reporting(E_ALL);
 // Require the autoload file
 require_once('vendor/autoload.php');
 
+//temp
+require_once('models/db-functions.php');
+
 // Start a session
 session_start();
 
 // Create an instance of the Base class
 $f3 = Base::instance();
+
+// Connect to the database (temp)
+$dbh = connect();
 
 // Set debug level 0 = off, 3 = max level
 $f3->set('DEBUG', 3);
