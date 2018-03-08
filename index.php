@@ -71,21 +71,56 @@ $f3->route('GET|POST /', function($f3) {
 });
 
 // Define a route for playing/viewing flashcards
-$f3->route('GET /play', function($f3) {
+$f3->route('GET|POST /play', function($f3) {
 
     $template = new Template();
     echo $template->render('views/view-flashcards.html');
 });
 
 // Define a route for editing flashcards from an existing deck
-$f3->route('GET /edit', function($f3) {
+$f3->route('GET|POST /edit', function($f3) {
 
     $template = new Template();
     echo $template->render('views/edit-flashcards.html');
 });
 
 // Define a route for creating a new deck
-$f3->route('GET /create', function($f3) {
+$f3->route('GET|POST /create', function($f3) {
+    $userId = $_SESSION['userId'];
+
+    global $dbh;
+    $deckName = "";
+    $question = array();
+    $answer = array();
+
+    if(isset($_POST["submit"])) {
+        $deckName = $_POST['deckName'];
+        $question = $_POST['question'];
+        $answer = $_POST['answer'];
+
+        print_r($question);
+
+        //test
+        //print_r($_POST);
+        $success = addNewDeck($deckName, $userId);
+
+        if($success) {
+            echo "This was successful";
+
+            // check if there are cards to add
+            if(sizeof($question) > 0){
+                    //create new object
+                //$newDeck = new questionAnswer($deckName, $question, $answer);
+                echo "success is okay.";
+                addPairsIntoDatabase($question, $answer);
+            }
+
+        } else {
+            echo "<p>".$deckName." is already taken. Create a deck with different name.</p>";
+        }
+
+
+    }
 
     $template = new Template();
     echo $template->render('views/create-new-deck.html');
@@ -134,6 +169,7 @@ $f3->route('GET|POST /login', function($f3) {
 
                     echo "Password does not match.";
                 } else {
+                    //add user id to session
                     $_SESSION['userId'] = $result['userId'];
                     echo "<p> From Database: ".$result['password']."</p>";
                     echo sha1($password);
@@ -144,8 +180,6 @@ $f3->route('GET|POST /login', function($f3) {
 
 
     } // isset
-
-
 
     $template = new Template();
     echo $template->render('views/login.html');
@@ -186,6 +220,7 @@ $f3->route('GET|POST /register', function($f3) {
             // if successful, get user id
             if($success)
             {
+                //add user id to session
                 $_SESSION['userId'] = $dbh->lastInsertId();
                 echo "Account successfully created!";
             } else {
@@ -194,8 +229,6 @@ $f3->route('GET|POST /register', function($f3) {
         }
 
     }
-
-
 
     $template = new Template();
     echo $template->render('views/register.html');

@@ -15,35 +15,45 @@
 class QuestionAnswer extends Deck
 {
 
-    private $_questionAnswer;
+    private $_question;
+    private $_answer;
 
     /**
      * QuestionAnswer constructor.
      * @param $name string
-     * @param $array associative array of question-answer pairs
+     * @param $question array of questions
+     * @param $answer array of answers
      */
-    function __construct($name, $array)
+    function __construct($name, $question, $answer)
     {
         parent::__construct($name);
-        $this->_notes = $array;
+        $this->_question = $question;
+        $this->_answer = $answer;
     }
 
     /**
-     * Gets associative array of questions and answers.
-     * @return string associative array of questions and answers
+     * Gets array of questions and answers.
+     * @return string array of questions and answers
      */
-    public function getQuestionAnswer()
+    public function getQuestions()
     {
-        return $this->_questionAnswer;
+        return $this->_question;
+    }
+
+    public function getAnswers()
+    {
+        return $this->_answer;
     }
 
     /**
-     * Sets associative array of questions and answers.
+     * Sets  array of questions and answers.
      * @param array $questionAnswer associative array of strings
      */
-    public function setQuestionAnswer($questionAnswer)
+    public function setQuestionAnswer($index, $question, $answer)
     {
-        $this->_questionAnswer = $questionAnswer;
+        $this->_question[index] = $question;
+        $this->_answer[index] = $answer;
+
     }
 
 
