@@ -2,7 +2,6 @@
     Kianna Dyck
     Jen Shin
 -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,10 +28,18 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
-            <a class="nav-item nav-link" href="./">Current Decks<span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="./create">Create New Deck</a>
-            <a class="nav-item nav-link active" href="./login">Login</a>
-            <a class="nav-item nav-link" href="./register">Create an account</a>
+            <check if ="{{ @_SESSION['userId'] }}">
+                <true>
+                    <a class="nav-item nav-link" href="./">Current Decks<span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link" href="./create">Create New Deck</a>
+                    <a class="nav-item nav-link" href="./logout">Logout</a>
+                </true>
+                <false>
+                    <a class="nav-item nav-link" href="./register">Create an account</a>
+                    <a class="nav-item nav-link active" href="./login">Login</a>
+                </false>
+            </check>
+
         </div>
     </div>
 </nav>

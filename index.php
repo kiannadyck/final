@@ -29,6 +29,11 @@ $f3->set('DEBUG', 3);
 // Define a default route
 $f3->route('GET|POST /', function($f3) {
 
+    //if not logged in, cannot get to inner pages
+    if(!isset($_SESSION['userId'])) {
+        $f3->reroute('/login');
+
+    }
     // Define array of decks (stored in database)
     $f3->set('options', array(
             'deck1',
@@ -72,6 +77,11 @@ $f3->route('GET|POST /', function($f3) {
 
 // Define a route for playing/viewing flashcards
 $f3->route('GET|POST /play', function($f3) {
+    //if not logged in, cannot get to inner pages
+    if(!isset($_SESSION['userId'])) {
+        $f3->reroute('/login');
+
+    }
 
     $template = new Template();
     echo $template->render('views/view-flashcards.html');
@@ -79,6 +89,11 @@ $f3->route('GET|POST /play', function($f3) {
 
 // Define a route for editing flashcards from an existing deck
 $f3->route('GET|POST /edit', function($f3) {
+    //if not logged in, cannot get to inner pages
+    if(!isset($_SESSION['userId'])) {
+        $f3->reroute('/login');
+
+    }
 
     $template = new Template();
     echo $template->render('views/edit-flashcards.html');
@@ -86,6 +101,12 @@ $f3->route('GET|POST /edit', function($f3) {
 
 // Define a route for creating a new deck
 $f3->route('GET|POST /create', function($f3) {
+
+    //if not logged in, cannot get to inner pages
+    if(!isset($_SESSION['userId'])) {
+        $f3->reroute('/login');
+
+    }
     $userId = $_SESSION['userId'];
 
     global $dbh;
@@ -103,6 +124,8 @@ $f3->route('GET|POST /create', function($f3) {
         //test
         //print_r($_POST);
         $success = addNewDeck($deckName, $userId);
+        $deckId = $dbh->lastInsertId();
+        echo "<p>Deck Id: ".$deckId."</p>";
 
         if($success) {
             echo "This was successful";
@@ -112,7 +135,7 @@ $f3->route('GET|POST /create', function($f3) {
                     //create new object
                 //$newDeck = new questionAnswer($deckName, $question, $answer);
                 echo "success is okay.";
-                addPairsIntoDatabase($question, $answer);
+                addPairsIntoDatabase($question, $answer, $deckId);
             }
 
         } else {
@@ -232,6 +255,12 @@ $f3->route('GET|POST /register', function($f3) {
 
     $template = new Template();
     echo $template->render('views/register.html');
+});
+
+//logout page
+$f3->route('GET|POST /logout', function($f3) {
+    session_destroy();
+    $f3 -> reroute('/login');
 });
 
 // Run fat free
