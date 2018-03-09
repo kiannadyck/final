@@ -148,6 +148,7 @@ function getUserDecks($userId)
     // 5. Return the result
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+
     // returns all decks with userId
     return $result;
 }

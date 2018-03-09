@@ -52,13 +52,18 @@
         <div class="form-group">
             <!-- These need styles and validation -->
             <label class="form-control-label" for="username">Username</label>
-            <input class="form-control" type="text" name="username" id="username">
+            <input class="form-control" type="text" name="username" id="username" <check if="{{ isset($_POST['username']) }}"> value="{{ $_POST['username'] }}" </check>>
+
+            <p class="text-danger">{{ @emailInUse }}</p>
+            <p class="text-danger">{{ @emailFormat }}</p>
 
             <label class="form-control-label" for="password">Password</label>
             <input class="form-control" type="password" name="password" id="password">
 
             <label class="form-control-label" for="password">Confirm Password</label>
             <input class="form-control" type="password" name="password2" id="password2">
+
+            <p class="text-danger">{{ @mismatchedPassword }}</p>
 
         </div>
         <div class="text-right">

@@ -26,7 +26,7 @@ $dbh = connect();
 // Set debug level 0 = off, 3 = max level
 $f3->set('DEBUG', 3);
 
-// Define a default route
+// Define a default route (Home Page/View Decks Collection)
 $f3->route('GET|POST /', function($f3) {
 
     global $dbh;
@@ -36,41 +36,60 @@ $f3->route('GET|POST /', function($f3) {
         $f3->reroute('/login');
 
     }
-    // Define array of decks (stored in database)
 
+    // get userId of currently logged in user
     $userId = $_SESSION['userId'];
 
+    // Retrieve decks for logged in user from database
     $result = getUserDecks($userId);
 
-    print_r($result);
-
+    // set decks array into hive
     $f3->set('options', $result);
 
-    //    print_r($_POST);
-
-    /*Array (
-        [deckOption] => deck2
-        [choice] => play
-        [submit] => Submit )*/
 
     if(isset($_POST['submit']))
     {
         // retrieve values from POST array
         $deck = $_POST['deckOption'];
         $choice = $_POST['choice'];
+        $choices = array('edit', 'play');
+
+        $f3->set("deck", $deck);
+        $f3->set("choice", $choice);
+
+        $isValid = true;
 
         // validate data
+        include 'models/data-validation.php';
+
+        /*$deckName = array();
+
+        foreach($result as $row) {
+            array_push($deckName, $row['deckName']);
+//        $deckName[] = $row['deckName'];
+        }*/
+
+        // choose a deck
+        /*if (!validSelection($deck, $result)) {
+            $isValid = false;
+        }
+
+        if(!validSelection($choice, $choices)) {
+            $isValid = false;
+        }*/
 
         // if data is valid, retrieve deck from database
-
+        if($isValid) {
+            // Reroute to next page depending on choice
+            if ($choice == "play") {
+                $f3->reroute('/play');
+            } else if ($choice == "edit") {
+                $f3->reroute('/edit');
+            }
+        }
         // store deck in session?
 
-        // Reroute to next page depending on choice
-        if ($choice == "play") {
-            $f3->reroute('/play');
-        } else if ($choice == "edit") {
-            $f3->reroute('/edit');
-        }
+
 
     }
 
@@ -160,6 +179,7 @@ $f3->route('GET|POST /login', function($f3) {
     global $dbh;
     $email = "";
     $password = "";
+    $mismatchedPassword = "";
 
     if(isset($_POST['submit'])) {
         // get post variables (username,password,password2)
@@ -193,7 +213,8 @@ $f3->route('GET|POST /login', function($f3) {
                 // check password
                 if ($result['password'] != sha1($password)) {
 
-                    echo "Password does not match.";
+                    $mismatchedPassword = "Password does not match the password stored for ".$email;
+                    $f3->set('mismatchedPassword', $mismatchedPassword);
                 } else {
                     //add user id to session
                     $_SESSION['userId'] = $result['userId'];
@@ -215,6 +236,9 @@ $f3->route('GET|POST /register', function($f3) {
 
     global $dbh; // temp?
 
+    $mismatchedPassword = "";
+    $emailInUse= "";
+
     if(isset($_POST['submit'])) {
         // get post variables (username,password,password2)
         // Array ( [username] => Kianna [password] => 123 [password2] => 123 [submit] => Create Account )
@@ -226,14 +250,21 @@ $f3->route('GET|POST /register', function($f3) {
 
         // validation (move to different page later)
         // validate email
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            echo("$email is not a valid email address");
+
+        if (empty($email)) {
+            $emailNotValidFormat = "Please enter an email.";
+            $f3->set('emailFormat', $emailNotValidFormat);
+            $isValid = false;
+        } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailNotValidFormat = "$email is not a valid email address";
+            $f3->set('emailFormat', $emailNotValidFormat);
             $isValid = false;
         }
 
         // validate password
         if($password != $password2) {
-            echo("Passwords do not match.");
+            $mismatchedPassword = "Passwords do not match.";
+            $f3->set('mismatchedPassword', $mismatchedPassword);
             $isValid = false;
         }
 
@@ -249,7 +280,8 @@ $f3->route('GET|POST /register', function($f3) {
                 $_SESSION['userId'] = $dbh->lastInsertId();
                 $f3->reroute("/");
             } else {
-                echo "Username already in use.";
+                $emailInUse = $email." already in use.";
+                $f3->set('emailInUse', $emailInUse);
             }
         }
 

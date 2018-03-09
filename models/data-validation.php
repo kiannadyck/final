@@ -16,7 +16,23 @@
  */
 function validSelection($input, $options)
 {
-    if (!empty($options)) {
+/*
+Array ( [0] => Array ( [deckName] => Kianna )
+[1] => Array ( [deckName] => Bob )
+[2] => Array ( [deckName] => JenKianna )
+*/
+
+    // input might be Kianna
+    // options is above
+
+
+    /*echo in_array($input, $options);*/
+
+/*    foreach($options as $key=>$value) {
+        if()
+    }*/
+
+/*    if (!empty($input) && !empty($options)) {
         if (!inarray($input, $options)) {
             return false;
         }
@@ -24,7 +40,7 @@ function validSelection($input, $options)
         return true;
     }
 
-    return false;
+    return false;*/
 
 
 }
@@ -36,10 +52,12 @@ function validSelection($input, $options)
  * @param $deck The name of the deck inputted by the user.
  * @return bool Returns true if deckName is entered, false otherwise.
  */
-function validDeckName($deck)
+/*function validDeckName($deck, $allDecks)
 {
-    return !empty($deck);
-}
+    // input field cannot be empty
+    // user cannot have a deck with name already in their collection
+    return !empty($deck) ;
+}*/
 
 // Question & Answer - if question is entered, answer is also entered and vice versa
 
