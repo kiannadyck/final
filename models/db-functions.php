@@ -1,7 +1,7 @@
 <?php
 // require database connection file
 //(probably need to change path)
-require ("/home/kdyckgre/final_config.php");
+require ("/home/jshingre/final_config.php");
 
 function connect()
 {
@@ -62,9 +62,69 @@ function getUser($email)
 
     // returns userId
     return $result;
-
-
 }
+
+function addNewDeck($deckName, $userId)
+{
+    //database connection
+    global $dbh;
+
+    // 1. define the query
+    $sql = "INSERT INTO decks (deckName, userId) VALUES (:deckName, :user)";
+
+    // 2. prepare the statement
+    $statement = $dbh->prepare($sql);
+
+    // 3. bind parameters
+    $statement->bindParam(':deckName', $deckName, PDO::PARAM_STR);
+    $statement->bindParam(':user', $userId, PDO::PARAM_INT);
+
+    // 4. execute the statement
+    $success = $statement->execute();
+
+    return $success;
+}
+
+function addPairsIntoDatabase($question, $answer, $deckId)
+{
+    //get both arrays from user object
+    //$answerArray = $object -> getQuestions();
+    //$questionArray = $object -> getAnswers();
+    global $dbh;
+
+    $isValid = true;
+
+    $answerArray = $answer;
+    $questionArray = $question;
+
+    //echo "HEY";
+    print_r($answerArray);
+    print_r($questionArray);
+
+    //loop through array to assign variables
+    for($i = 0; $i < sizeof($questionArray); $i++) {
+        $question = $questionArray[$i];
+        $answer = $answerArray[$i];
+
+        $sql = "INSERT INTO flashcard (question, answer, deckId) VALUES (:question, :answer, :deckId)";
+
+        // 2. prepare the statement
+        $statement = $dbh->prepare($sql);
+
+        // 3. bind parameters
+        $statement->bindParam(':question', $question, PDO::PARAM_STR);
+        $statement->bindParam(':answer', $answer, PDO::PARAM_STR);
+        $statement->bindParam(':deckId', $deckId, PDO::PARAM_INT);
+
+        $success = $statement->execute();
+
+        if(!$success) {
+            $isValid = false;
+        }
+    }
+    return $isValid;
+    }
+
 
 function getUserDecks()
 {
