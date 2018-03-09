@@ -1,7 +1,7 @@
 <?php
 // require database connection file
 //(probably need to change path)
-require ("/home/jshingre/final_config.php");
+require ("/home/kdyckgre/final_config.php");
 
 function connect()
 {
@@ -126,9 +126,30 @@ function addPairsIntoDatabase($question, $answer, $deckId)
     }
 
 
-function getUserDecks()
+function getUserDecks($userId)
 {
     // query database to get a user's collection of decks
+
+    global $dbh;
+
+    // 1. define the query
+    // SELECT deckId, deckName FROM decks WHERE userId = 4
+    $sql = "SELECT deckName FROM decks WHERE userId = :userId";
+
+    // 2. prepare the statement
+    $statement = $dbh->prepare($sql);
+
+    // 3. bind parameters
+    $statement->bindParam(':userId', $userId, PDO::PARAM_INT);
+
+    // 4. execute the statement
+    $statement->execute();
+
+    // 5. Return the result
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    // returns all decks with userId
+    return $result;
 }
 
 function getDeckFlashcards()

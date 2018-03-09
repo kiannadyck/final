@@ -29,17 +29,22 @@ $f3->set('DEBUG', 3);
 // Define a default route
 $f3->route('GET|POST /', function($f3) {
 
+    global $dbh;
+
     //if not logged in, cannot get to inner pages
     if(!isset($_SESSION['userId'])) {
         $f3->reroute('/login');
 
     }
     // Define array of decks (stored in database)
-    $f3->set('options', array(
-            'deck1',
-            'deck2',
-            'deck3')
-    );
+
+    $userId = $_SESSION['userId'];
+
+    $result = getUserDecks($userId);
+
+    print_r($result);
+
+    $f3->set('options', $result);
 
     //    print_r($_POST);
 
@@ -152,7 +157,7 @@ $f3->route('GET|POST /create', function($f3) {
 // Define route for login
 $f3->route('GET|POST /login', function($f3) {
 
-    global $dbh; // temp?
+    global $dbh;
     $email = "";
     $password = "";
 
@@ -187,15 +192,12 @@ $f3->route('GET|POST /login', function($f3) {
             } else {
                 // check password
                 if ($result['password'] != sha1($password)) {
-                    echo "<p> From Database: ".$result['password']."</p>";
-                    echo sha1($password);
 
                     echo "Password does not match.";
                 } else {
                     //add user id to session
                     $_SESSION['userId'] = $result['userId'];
-                    echo "<p> From Database: ".$result['password']."</p>";
-                    echo sha1($password);
+                    $f3->reroute("/");
                 }
             }
 
@@ -245,7 +247,7 @@ $f3->route('GET|POST /register', function($f3) {
             {
                 //add user id to session
                 $_SESSION['userId'] = $dbh->lastInsertId();
-                echo "Account successfully created!";
+                $f3->reroute("/");
             } else {
                 echo "Username already in use.";
             }
