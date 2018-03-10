@@ -27,21 +27,23 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="navbar-nav">
-        <check if ="{{ @_SESSION['userId'] }}">
-            <true>
-                <a class="nav-item nav-link" href="./">Current Decks<span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link" href="./create">Create New Deck</a>
-                <a class="nav-item nav-link" href="./logout">Logout</a>
-            </true>
-            <false>
-                <a class="nav-item nav-link" href="./register">Create an account</a>
-                <a class="nav-item nav-link active" href="./login">Login</a>
-            </false>
-        </check>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <check if ="{{ @_SESSION['userId'] }}">
+                <true>
+                    <a class="nav-item nav-link" href="./">Current Decks</a>
+                    <a class="nav-item nav-link active" href="./create">Create New Deck</a>
+                    <a class="nav-item nav-link" href="./logout">Logout</a>
+                </true>
+                <false>
+                    <a class="nav-item nav-link" href="./register">Create an account</a>
+                    <a class="nav-item nav-link" href="./login">Login</a>
+                </false>
+            </check>
 
-    </div>
-</nav>
+        </div> <!-- navbar -->
+    </div> <!-- collapsible content div -->
+</nav> <!-- nav -->
 
 <div class="container">
     <h2>Create New Deck</h2>
