@@ -50,14 +50,26 @@
 
     <form action="#" method="post">
         <div class="form-group">
-            <!-- These need styles and validation -->
             <label class="form-control-label" for="username">Username</label>
             <input class="form-control" type="text" name="username" id="username" <check if="{{ isset($_POST['username']) }}"> value="{{ $_POST['username'] }}" </check>>
+
+            <!-- Error message for username email -->
+            <div>
+                <check if="{{!empty (@invalidEmail) }}">
+                    <p class="text-danger">{{ @invalidEmail }}</p>
+                </check>
+            </div>
 
             <label class="form-control-label" for="password">Password</label>
             <input class="form-control" type="password" name="password" id="password">
 
-            <p class="text-danger">{{ @mismatchedPassword }}</p>
+            <!-- Error message for password -->
+            <div>
+                <check if="{{!empty (@mismatchedPassword) }}">
+                    <p class="text-danger">{{ @mismatchedPassword }}</p>
+                </check>
+            </div>
+
 
 
         </div>

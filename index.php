@@ -179,51 +179,65 @@ $f3->route('GET|POST /login', function($f3) {
     global $dbh;
     $email = "";
     $password = "";
+
     $mismatchedPassword = "";
+    $invalidEmail = "";
 
     if(isset($_POST['submit'])) {
         // get post variables (username,password,password2)
         // Array ( [username] => Kianna [password] => 123 [password2] => 123 [submit] => Create Account )
 
-        $isValid = true;
+        $isValidEmail = true;
 
         if(!empty($_POST['username'])) {
             $email = $_POST['username']; // email
         } else {
-            echo "Please enter a username.";
-            $isValid = false;
+            $invalidEmail = "Please enter a username.";
+            $isValidEmail = false;
         }
 
         if(!empty($_POST['password'])) {
             $password = $_POST['password'];
         } else {
-            echo "Please enter a password.";
-            $isValid = false;
+            $mismatchedPassword = "Please enter a password.";
         }
 
-        if($isValid)
+        /* Set Hive Variables */
+        $f3->set('invalidEmail', $invalidEmail);
+        $f3->set('mismatchedPassword', $mismatchedPassword);
+
+        if($isValidEmail)
         {
             // check if username and password match stored credentials
 
             // retrieve userid
             $result = getUser($email);
             if ($result == null) {
-                echo $email." does not exist.";
+                $invalidEmail = $email." does not exist.";
+                $f3->set('invalidEmail', $invalidEmail);
             } else {
                 // check password
-                if ($result['password'] != sha1($password)) {
+                if(!empty($password)) {
+                    // Check if stored password matches input from password field
+                    if ($result['password'] != sha1($password)) {
 
-                    $mismatchedPassword = "Password does not match the password stored for ".$email;
-                    $f3->set('mismatchedPassword', $mismatchedPassword);
+                        $mismatchedPassword = "Password does not match the password stored for ".$email;
+                        /*$f3->set('mismatchedPassword', $mismatchedPassword);*/
+                    } else {
+                        //add user id to session
+                        $_SESSION['userId'] = $result['userId'];
+                        $f3->reroute("/");
+                    }
                 } else {
-                    //add user id to session
-                    $_SESSION['userId'] = $result['userId'];
-                    $f3->reroute("/");
+                    $mismatchedPassword = "Please enter a password.";
                 }
-            }
 
-        }
+                /* Set Hive Variable */
+                $f3->set('mismatchedPassword', $mismatchedPassword);
 
+            } // end of else
+
+        } // end of $isValidEmail
 
     } // isset
 
