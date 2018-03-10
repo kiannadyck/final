@@ -168,3 +168,24 @@ function editDeck()
 {
 
 }
+
+function getAllUsers()
+{
+    global $dbh;
+
+    // 1. define the query
+    $sql = "SELECT email FROM loginCredentials";
+
+    // 2. prepare the statement
+    $statement = $dbh->prepare($sql);
+
+    // 3. bind parameters
+
+    // 4. execute the statement
+    $statement->execute();
+
+    // 5. Return the result
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    return $result;
+}

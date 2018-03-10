@@ -234,10 +234,11 @@ $f3->route('GET|POST /login', function($f3) {
 // Define route for registration of new users
 $f3->route('GET|POST /register', function($f3) {
 
-    global $dbh; // temp?
+    global $dbh;
 
     $mismatchedPassword = "";
-    $emailInUse= "";
+    /*$emailInUse= "";*/
+    $invalidEmail = "";
 
     if(isset($_POST['submit'])) {
         // get post variables (username,password,password2)
@@ -247,42 +248,82 @@ $f3->route('GET|POST /register', function($f3) {
         $password = $_POST['password'];
         $password2 = $_POST['password2'];
         $isValid = true;
+        $found = false;
 
         // validation (move to different page later)
         // validate email
 
+        /* Array retrieved from database of stored users */
+
+        //        Array (
+        // [0] => Array ( [email] => )
+        // [1] => Array ( [email] => jen@mail.com )
+        // [2] => Array ( [email] => jen@test.om )
+        // [3] => Array ( [email] => jk@lol.com )
+        // [4] => Array ( [email] => jshin13@mail.com )
+        // [5] => Array ( [email] => ki@mail.com )
+        // [6] => Array ( [email] => kiwi@fruitylicious.com )
+        // [7] => Array ( [email] => test3@email.com ) )
+
         if (empty($email)) {
-            $emailNotValidFormat = "Please enter an email.";
-            $f3->set('emailFormat', $emailNotValidFormat);
+            $invalidEmail = "Please enter an email.";
+            /*$f3->set('emailFormat', $emailNotValidFormat);*/
             $isValid = false;
         } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            $emailNotValidFormat = "$email is not a valid email address";
-            $f3->set('emailFormat', $emailNotValidFormat);
+            $invalidEmail = "$email is not a valid email address";
+            /*$f3->set('emailFormat', $emailNotValidFormat);*/
             $isValid = false;
+        } else {
+            // retrieve all users currently stored in database
+            $allUsers = getAllUsers();
+            // if result of query is not empty,
+            // check if entered username/email matches any found in database
+            if(!empty($allUsers)) {
+                foreach($allUsers as $user) {
+                    if(in_array($email, $user)) {
+                        $found = true;
+                        break; // if found, break out of loop
+                    }
+                }
+                if($found) {
+                    $invalidEmail = $email." already in use.";
+                    $isValid = false;
+                }
+            }
         }
 
         // validate password
+        if(empty($password) || empty($password2)) {
+            $mismatchedPassword = "Please enter a password";
+            $isValid = false;
+        }
         if($password != $password2) {
             $mismatchedPassword = "Passwords do not match.";
-            $f3->set('mismatchedPassword', $mismatchedPassword);
             $isValid = false;
         }
 
+
+        /* Set Hive Variables */
+        $f3->set('invalidEmail', $invalidEmail);
+        $f3->set('mismatchedPassword', $mismatchedPassword);
+
+
+        /* if no errors */
         if($isValid)
         {
             // call function to addUser
             $success = addNewUser($email, $password);
 
-            // if successful, get user id
+            // if user successfully added to database, get user id and reroute to home page
             if($success)
             {
                 //add user id to session
                 $_SESSION['userId'] = $dbh->lastInsertId();
                 $f3->reroute("/");
-            } else {
+            } /*else {
                 $emailInUse = $email." already in use.";
                 $f3->set('emailInUse', $emailInUse);
-            }
+            }*/
         }
 
     }
