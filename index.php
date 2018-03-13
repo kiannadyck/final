@@ -137,35 +137,47 @@ $f3->route('GET|POST /create', function($f3) {
     $deckName = "";
     $question = array();
     $answer = array();
+    $isValid = true;
 
     if(isset($_POST["submit"])) {
-        $deckName = $_POST['deckName'];
+        if(empty($_POST['deckName'])) {
+            $invalidDeckName = "Deck name cannot be empty.";
+            //set error message into hive
+            $f3->set('invalidDeckName', $invalidDeckName);
+            $isValid = false;
+        } else { //deckName cannot be empty
+            $deckName = $_POST['deckName'];
+
+        }
         $question = $_POST['question'];
         $answer = $_POST['answer'];
 
-        print_r($question);
+        //print_r($question);
 
         //test
         //print_r($_POST);
-        $success = addNewDeck($deckName, $userId);
-        $deckId = $dbh->lastInsertId();
-        echo "<p>Deck Id: ".$deckId."</p>";
+        if($isValid) {
+            $success = addNewDeck($deckName, $userId);
+            $deckId = $dbh->lastInsertId();
+            echo "<p>Deck Id: " . $deckId . "</p>";
 
-        if($success) {
-            echo "This was successful";
+            if ($success) {
+                echo "This was successful";
 
-            // check if there are cards to add
-            if(sizeof($question) > 0){
+                // check if there are cards to add
+                if (sizeof($question) > 0) {
                     //create new object
-                //$newDeck = new questionAnswer($deckName, $question, $answer);
-                echo "success is okay.";
-                addPairsIntoDatabase($question, $answer, $deckId);
+                    //$newDeck = new questionAnswer($deckName, $question, $answer);
+                    echo "success is okay.";
+                    addPairsIntoDatabase($question, $answer, $deckId);
+                }
+
+            } else {
+                $invalidDeckName = $deckName . " is already taken. Create a deck with different name.";
+                $f3->set('invalidDeckName', $invalidDeckName);
+
             }
-
-        } else {
-            echo "<p>".$deckName." is already taken. Create a deck with different name.</p>";
         }
-
 
     }
 

@@ -50,6 +50,12 @@
     <form method='post' action='#'>
 
         Deck Name: <input type ="text" class= "form-control" id = "deckName" name = "deckName"><br/>
+        <!-- Error message for deckName -->
+        <div>
+            <check if="{{!empty (@invalidDeckName) }}">
+                <p class="text-danger">{{ @invalidDeckName }}</p>
+            </check>
+        </div>
         <hr/>
 
         <div id='TextBoxesGroup' class="form-group">
