@@ -46,7 +46,21 @@
 </nav> <!-- nav -->
 
 <div class="container">
-    <h2>Play/View Flashcards (Testing Route)</h2>
+    <h2>Play/View Flashcards (placed temporarily in bootstrap cards)</h2>
+
+    <repeat group="{{ @flashcards }}" value="{{ @flashcard }}">
+        <!-- Temporary -->
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Question</h5>
+                <p class="card-text">{{ @flashcard['question'] }}</p>
+            </div>
+            <div class="card-footer"><p><span class="font-weight-bold">Answer:</span> {{ @flashcard['answer'] }}</p></div>
+        </div>
+
+        <br>
+
+    </repeat>
 
 </div> <!-- container -->
 

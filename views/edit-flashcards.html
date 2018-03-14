@@ -46,7 +46,67 @@
 </nav> <!-- nav -->
 
 <div class="container">
-    <h2>Edit Flashcards (Testing Route)</h2>
+    <h2 class="text-center my-4">Edit Flashcards</h2>
+    <table class="table">
+        <tr>
+            <th>Question</th>
+            <th>Answer</th>
+            <th>Edit Flashcard</th>
+            <th>Remove Flashcard</th>
+        </tr>
+
+        <repeat group="{{ @flashcards }}" value="{{ @flashcard }}">
+            <tr id="{{ @flashcard['pairId'] }}">
+                <td>
+                    <!--<div class="input-group">-->
+                        <textarea class="form-control" rows="4" style="resize:none">{{ @flashcard['question'] }}</textarea>
+                        <!--<input type="text" class="form-control" value="{{ @flashcard['question'] }}">-->
+                        <!--<div class="input-group-append">
+                            <button class="btn btn-outline-secondary saveButton" type="button">Save</button>
+                        </div>-->
+                    <!--</div>-->
+                </td>
+
+                <td>
+                    <textarea class="form-control" rows="4" style="resize:none">{{ @flashcard['answer'] }}</textarea>
+                    <!--<div class="input-group">
+                        <input type="text" class="form-control" value="{{ @flashcard['answer'] }}">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary saveButton" type="button">Save</button>
+                        </div>
+                    </div>-->
+                </td>
+
+                <td>
+                    <a href="#" class="saveButton">Update Flashcard!</a>
+                </td>
+
+                <td>
+                    <a href="#" class="remove">Remove</a>
+                </td>
+
+            </tr>
+        </repeat>
+
+    </table>
+
+    <!-- Add new flashcard -->
+    <button type="button" class="btn btn-primary mb-4" id="addNew">Add new Flashcard</button>
+
+    <div id='TextBoxesGroup' class="form-group">
+        <div id="TextBoxDiv">
+            <label>Question: </label>
+            <input type="text" class= "form-control" name="question[]" id="question" >
+
+            <br>
+
+            <label>Answer: </label>
+            <input type="text" class= "form-control" name="answer[]" id="answer" >
+
+            <br>
+            <hr>
+        </div>
+    </div>
 
 </div> <!-- container -->
 
@@ -59,6 +119,71 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <!-- bootstrap -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+
+<!--jQuery Library-->
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+</script>
+
+<!-- Work in Progress -->
+<script>
+    // edit/save buttons
+    $(".saveButton").click(function(){
+        alert("You clicked me! Theoretically, I trigger an event that will send an ajax request to update " +
+            "the database, maybe only when a change is detected? I need the pairId - maybe stored as the id of " +
+            "each ^tr^ tag. I also need to be able to identify if the input I am updating is a question or an " +
+            "answer, maybe stored as a class in the input field, or as an id with an incrementing counter? " +
+            "Alternatively, I could become another column in the table that updates both question and answer " +
+            "fields each time I'm clicked. Oh, I also need to retrieve the value entered into the input field to " +
+            "send to the database. Probably the .val() function will come in handy... side note: input fields will " +
+            "need to be validated before updating the database to verify the form is not empty.");
+    });
+
+    $("#TextBoxDiv").hide();
+
+    // add button
+    $("#addNew").click(function() {
+
+        if ($(this).text() == "Add new Flashcard") {
+            $(this).text("Save Flashcard to Deck");
+            newPair();
+        } else {
+            $(this).text("Add new Flashcard");
+            savePair();
+        };
+
+    });
+
+    function newPair()
+    {
+        alert("You clicked me! When clicked, a question input and answer input appear, similar to how the create " +
+            "a new deck page looks. The add button might toggle to become a save button, which when clicked will send the " +
+            "new question-answer pair using ajax to the database. Once saved, using jquery, a new ^tr^ could be appended " +
+            "to the table containing the new question-answer pair where further edits can be made if desired...");
+
+        $("#TextBoxDiv").show();
+
+    }
+
+    function savePair()
+    {
+        alert("Gonna send your flashcard to the database. Validated, of course!");
+        $("#TextBoxDiv").hide();
+    }
+
+    // remove buttons
+    $(".remove").click(function() {
+        var confirmation = confirm("Are you positive you want to remove this flashcard from your study deck?");
+        if (confirmation)
+        {
+            alert("yay! I'm gone! Or will be, once I re-lookup how to do the fancy jQuery for this... oh, plus " +
+                "ajax to remove from the database so it doesn't repopulate the table with 'removed' flashcards " +
+                "upon refresh...");
+        }
+    });
+</script>
 
 </body>
 

@@ -134,7 +134,7 @@ function getUserDecks($userId)
 
     // 1. define the query
     // SELECT deckId, deckName FROM decks WHERE userId = 4
-    $sql = "SELECT deckName FROM decks WHERE userId = :userId";
+    $sql = "SELECT deckId, deckName FROM decks WHERE userId = :userId";
 
     // 2. prepare the statement
     $statement = $dbh->prepare($sql);
@@ -153,9 +153,29 @@ function getUserDecks($userId)
     return $result;
 }
 
-function getDeckFlashcards()
+function getDeckFlashcards($deckId)
 {
     // after user selects a deck, get flashcards with that deck's id
+    global $dbh;
+
+    // 1. define the query
+    // SELECT pairId, question, answer FROM flashcard WHERE deckId = 25
+    $sql = "SELECT pairId, question, answer FROM flashcard WHERE deckId = :deckId";
+
+    // 2. prepare the statement
+    $statement = $dbh->prepare($sql);
+
+    // 3. bind parameters
+    $statement->bindParam(':deckId', $deckId, PDO::PARAM_INT);
+
+    // 4. execute the statement
+    $statement->execute();
+
+    // 5. Return the result
+    $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+    // returns all flashcards with given deckId
+    return $result;
 }
 
 function saveDeck()

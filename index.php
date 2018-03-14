@@ -43,6 +43,21 @@ $f3->route('GET|POST /', function($f3) {
     // Retrieve decks for logged in user from database
     $result = getUserDecks($userId);
 
+    /*
+     * Array received from database
+     *
+     * Array (
+     * [0] => Array (
+     *              [deckId] => 24
+     *              [deckName] => myFirstDeck
+     *               )
+     * [1] => Array (
+     *              [deckId] => 25
+     *              [deckName] => Second Deck is the Best
+     *              )
+     *      )
+     */
+
     // set decks array into hive
     $f3->set('options', $result);
 
@@ -50,11 +65,22 @@ $f3->route('GET|POST /', function($f3) {
     if(isset($_POST['submit']))
     {
         // retrieve values from POST array
-        $deck = $_POST['deckOption'];
-        $choice = $_POST['choice'];
-        $choices = array('edit', 'play');
 
-        $f3->set("deck", $deck);
+        // this retrieves the value attribute stored in each option. This value is the deckId.
+        $deck = $_POST['deckOption'];
+
+        $choice = $_POST['choice'];
+//        $choices = array('edit', 'play');
+
+        // set deckId to a session to be grabbed by edit and play routes/pages
+        $_SESSION['deckId'] = $deck;
+
+        // deckId test
+        /*echo $deck;*/
+
+//        $f3->set("deck", $deck);
+
+        // Used for sticky radios
         $f3->set("choice", $choice);
 
         $isValid = true;
@@ -85,6 +111,8 @@ $f3->route('GET|POST /', function($f3) {
                 $f3->reroute('/play');
             } else if ($choice == "edit") {
                 $f3->reroute('/edit');
+            } else {
+                echo "Please select edit or play.";
             }
         }
         // store deck in session?
@@ -107,6 +135,13 @@ $f3->route('GET|POST /play', function($f3) {
 
     }
 
+    $deckId = $_SESSION[deckId];
+
+    $result = getDeckFlashcards($deckId);
+
+    // set flashcards array to hive
+    $f3->set('flashcards', $result);
+
     $template = new Template();
     echo $template->render('views/view-flashcards.html');
 });
@@ -118,6 +153,39 @@ $f3->route('GET|POST /edit', function($f3) {
         $f3->reroute('/login');
 
     }
+
+    $deckId = $_SESSION[deckId];
+//    echo "<p>Selected Deck has id of: $deckId</p>"; // temp
+
+    $result = getDeckFlashcards($deckId);
+    /*print_r($result);*/
+
+    /* Array retrieved from database
+     *
+     * Array (
+     * [0] => Array ( [pairId] => 9
+     *                [question] => Is this a question?
+     *                [answer] => I suppose it is. )
+     *
+     * [1] => Array ( [pairId] => 10
+     *                [question] => "Peter Piper picked a peck of pickled peppers. A p
+     *                [answer] => Alliteration )
+     *
+     * [2] => Array ( [pairId] => 11
+     *                [question] => A line of verse with five metrical feet, each cons
+     *                [answer] => iambic pentameter )
+     *
+     * [3] => Array ( [pairId] => 12
+     *                [question] => "As brave as a lion" is an example of what poetic
+     *                [answer] => Simile )
+     *
+     * [4] => Array ( [pairId] => 13
+     *                [question] => Onomatopoeia is defined as _________________.
+     *                [answer] => The naming of a thing or action by a vocal imitati ) )
+     */
+
+    // set flashcards array to hive
+    $f3->set('flashcards', $result);
 
     $template = new Template();
     echo $template->render('views/edit-flashcards.html');
