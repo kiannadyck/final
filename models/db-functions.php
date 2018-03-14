@@ -1,7 +1,7 @@
 <?php
 // require database connection file
 //(probably need to change path)
-require ("/home/kdyckgre/final_config.php");
+require ("/home/jshingre/final_config.php");
 
 function connect()
 {
