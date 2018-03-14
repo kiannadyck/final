@@ -56,7 +56,7 @@
             <select class="form-control" name="deckOption" id="decks">
 
                 <repeat group ='{{ @options }}' value="{{ @option }}">
-                    <option>{{ @option['deckName'] }}</option>
+                    <option value="{{ @option['deckId'] }}">{{ @option['deckName'] }}</option>
                 </repeat>
 
             </select>
