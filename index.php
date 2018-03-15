@@ -138,10 +138,34 @@ $f3->route('GET|POST /play', function($f3) {
 
     $deckId = $_SESSION['deckId'];
 
+    // retrieve all flashcards with given deckId from database
     $result = getDeckFlashcards($deckId);
 
-    // set flashcards array to hive
-    $f3->set('flashcards', $result);
+    // convert retrieved deck into an associative array
+    $flashcards = array();
+    foreach($result as $flashcard)
+    {
+        $question = $flashcard['question'];
+        $answer = $flashcard['answer'];
+        $flashcards[$question] = $answer;
+    }
+
+    // shuffle deck while preserving key=>value pairs
+    $shuffled = array();
+    while(!empty($flashcards))
+    {
+        // select one random key from our associative array
+        $randomKey = array_rand($flashcards, 1);
+
+        // add key to new array
+        $shuffled[$randomKey] = $flashcards[$randomKey];
+
+        // unset key in original array
+        unset($flashcards[$randomKey]);
+    }
+
+    // set shuffled flashcards array to hive
+    $f3->set('flashcards', $shuffled);
 
     $template = new Template();
     echo $template->render('views/view-flashcards.html');

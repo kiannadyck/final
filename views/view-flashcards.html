@@ -51,24 +51,18 @@
     <h2>Deck Title</h2>
     <div>
 
-        <repeat group="{{ @flashcards }}" value="{{ @flashcard }}">
+        <repeat group="{{ @flashcards }}" key="{{ @question }}" value="{{ @answer }}">
             <!-- Temporary -->
             <div class="card" >
                 <div class="card-body" style="height: 18rem">
                     <h5 class="card-title">Question</h5>
 
-
-                    <p class="card-text">{{ @flashcard['question'] }}</p>
-
-
-
-
-
+                    <p class="card-text">{{ @question }}</p>
 
                 </div>
                 <div class="card-footer">
                     <button class="btn btn-outline-danger showAnswer">Show Answer</button>
-                    <p class="answer"><span class="font-weight-bold" >Answer:</span> {{ @flashcard['answer'] }}</p></div>
+                    <p class="answer"><span class="font-weight-bold" >Answer:</span> {{ @answer }}</p></div>
             </div>
 
 
@@ -131,7 +125,8 @@
 
     }
 
-    function showAnswer() {
+    function showAnswer()
+    {
         $(".showAnswer").click(function() {
             $(".answer").show();
             $(".showAnswer").hide();
@@ -142,20 +137,12 @@
 
 
     $("#next").click(function() {
-
-        // $("#answer").hide();
-
         plusDivs(1);
-
     });
 
 
     $("#previous").click(function() {
-
-        // $("#answer").hide();
-
         plusDivs(-1);
-
     });
 
 
