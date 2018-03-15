@@ -182,7 +182,7 @@ $f3->route('GET|POST /edit', function($f3) {
 //    echo "<p>Selected Deck has id of: $deckId</p>"; // temp
 
     $result = getDeckFlashcards($deckId);
-    /*print_r($result);*/
+    print_r($result);
 
     /* Array retrieved from database
      *

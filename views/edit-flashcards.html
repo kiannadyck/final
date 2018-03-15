@@ -56,7 +56,7 @@
 
         <repeat group="{{ @flashcards }}" value="{{ @flashcard }}">
             <tr id="{{ @flashcard['pairId'] }}">
-                <td>
+                <td data-id="question">
                     <!--<div class="input-group">-->
                         <textarea class="form-control"  rows="5" style="resize:none">{{ @flashcard['question'] }}</textarea>
                         <!--<input type="text" class="form-control" value="{{ @flashcard['question'] }}">-->
@@ -66,7 +66,7 @@
                     <!--</div>-->
                 </td>
 
-                <td>
+                <td data-id="answer">
                     <textarea class="form-control" rows="5" style="resize:none">{{ @flashcard['answer'] }}</textarea>
                     <!--<div class="input-group">
                         <input type="text" class="form-control" value="{{ @flashcard['answer'] }}">
@@ -192,8 +192,27 @@
     for (y; y < ylength; y++) {
         if (document.addEventListener) {
             removeButtons[y].addEventListener("click", function() {
+                // get row button is in
+                var currentRow = $(this).closest('tr');
+
+                // get the pairId stored in the row
+                var pairId = $(currentRow).attr('id');
+
+                // get the question text
+                var questionTd = currentRow.find("td:first-child");
+                var questionText = questionTd.find(":input").val();
+
+                // get the answer text
+                var answerTd = currentRow.find("td:nth-child(2)");
+                var answerText = answerTd.find(":input").val();
+
+                // testing to see if information was successfully retrieved
+                alert("Pair Id = " + pairId + "\n" +
+                    "Question = " + questionText + "\n" +
+                    "Answer = " + answerText);
+
                 // use keyword this to target clicked button
-                removeHandler();
+                // removeHandler();
             });
         } else {
             removeButtons[y].attachEvent("onclick", function() {
@@ -204,13 +223,17 @@
 
     // remove buttons
     function removeHandler() {
-        var confirmation = confirm("Are you positive you want to remove this flashcard from your study deck?");
+        var currentRow = $(this).closest('tr');
+        var pairId = $(currentRow).attr('id');
+        alert(pairId);
+
+        /*var confirmation = confirm("Are you positive you want to remove this flashcard from your study deck?");
         if (confirmation)
         {
             alert("yay! I'm gone! Or will be, once I re-lookup how to do the fancy jQuery for this... oh, plus " +
                 "ajax to remove from the database so it doesn't repopulate the table with 'removed' flashcards " +
                 "upon refresh...");
-        }
+        }*/
     }
 </script>
 
