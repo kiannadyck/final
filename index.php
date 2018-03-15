@@ -112,7 +112,8 @@ $f3->route('GET|POST /', function($f3) {
             } else if ($choice == "edit") {
                 $f3->reroute('/edit');
             } else {
-                echo "Please select edit or play.";
+                $choiceErr = "Please select edit or play.";
+                $f3->set('choiceErr', $choiceErr);
             }
         }
         // store deck in session?
@@ -135,7 +136,7 @@ $f3->route('GET|POST /play', function($f3) {
 
     }
 
-    $deckId = $_SESSION[deckId];
+    $deckId = $_SESSION['deckId'];
 
     $result = getDeckFlashcards($deckId);
 
@@ -154,7 +155,7 @@ $f3->route('GET|POST /edit', function($f3) {
 
     }
 
-    $deckId = $_SESSION[deckId];
+    $deckId = $_SESSION['deckId'];
 //    echo "<p>Selected Deck has id of: $deckId</p>"; // temp
 
     $result = getDeckFlashcards($deckId);

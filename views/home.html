@@ -52,11 +52,12 @@
         <form action="#" method="post">
         <!--select dropdown for deck-->
         <div class="form-group">
-            <label for="decks">Choose a deck</label>
+            <label for="decks">Choose a deck</label>&nbsp;&nbsp;&nbsp;<span class="text-danger">{{@choiceErr}}</span>
             <select class="form-control" name="deckOption" id="decks">
 
                 <repeat group ='{{ @options }}' value="{{ @option }}">
-                    <option value="{{ @option['deckId'] }}">{{ @option['deckName'] }}</option>
+                    <option value="{{ @option['deckId'] }}" <check if="{{ @option['deckId'] == $_POST['deckOption']
+                    }}">selected</check>>{{ @option['deckName'] }}</option>
                 </repeat>
 
             </select>
@@ -77,13 +78,9 @@
         <!--instructions-->
         <h4>How to Play/Instructions</h4>
         <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-            ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit
-            in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
-            sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-            mollit anim id est laborum.
+            This is your home page.<br/>
+            This this where all your decks are listed. <br/>Choose a deck to edit or play.
+            Decks are stored in pairs (question-answer, word-meaning).
         </p>
 
 

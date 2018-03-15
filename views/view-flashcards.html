@@ -46,22 +46,39 @@
 </nav> <!-- nav -->
 
 <div class="container">
-    <h2>Play/View Flashcards (placed temporarily in bootstrap cards)</h2>
 
-    <repeat group="{{ @flashcards }}" value="{{ @flashcard }}">
-        <!-- Temporary -->
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Question</h5>
-                <p class="card-text">{{ @flashcard['question'] }}</p>
+
+    <h2>Deck Title</h2>
+    <div>
+
+        <repeat group="{{ @flashcards }}" value="{{ @flashcard }}">
+            <!-- Temporary -->
+            <div class="card" >
+                <div class="card-body" style="height: 18rem">
+                    <h5 class="card-title">Question</h5>
+
+
+                    <p class="card-text">{{ @flashcard['question'] }}</p>
+
+
+
+
+
+
+                </div>
+                <div class="card-footer">
+                    <button class="btn btn-outline-danger" id="showAnswer">Show Answer</button>
+                    <p id = "answer"><span class="font-weight-bold" >Answer:</span> {{ @flashcard['answer'] }}</p></div>
             </div>
-            <div class="card-footer"><p><span class="font-weight-bold">Answer:</span> {{ @flashcard['answer'] }}</p></div>
+
+
+        </repeat>
+        <br/>
+        <div class = "text-center">
+            <button class="btn btn-outline-secondary w3-button w3-black w3-display-left" id ="previous" value="previous">&#10094; Previous</button>
+            <button class="btn btn-outline-success w3-button w3-black w3-display-right" id = "next" value ="next">Next &#10095;</button>
         </div>
-
-        <br>
-
-    </repeat>
-
+    </div>
 </div> <!-- container -->
 
 
@@ -73,7 +90,70 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <!-- bootstrap -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script>
+    $("#answer").hide();
 
+    var slideIndex = 1;
+    showDivs(slideIndex);
+
+    function plusDivs(n) {
+
+        showDivs(slideIndex += n);
+        $("#answer").hide();
+    }
+
+    function showDivs(n) {
+
+        var i;
+        var x = document.getElementsByClassName("card");
+        if (n == x.length) {
+            $("#next").hide()
+        } else {
+            $("#next").show()
+
+        }
+        if (n == 1) {
+            $("#previous").hide();
+        } else {
+            $("#previous").show();
+
+        }
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+
+        }
+        x[slideIndex-1].style.display = "block";
+
+    }
+
+    function showAnswer() {
+        $("#showAnswer").click(function() {
+            $("#answer").show();
+            $("#showAnswer").hide();
+
+        });
+    }
+
+    $("#next").click(function() {
+
+        $("#answer").hide();
+
+        plusDivs(1);
+
+    });
+
+
+    $("#previous").click(function() {
+
+        $("#answer").hide();
+
+        plusDivs(-1);
+
+    });
+
+
+
+</script>
 </body>
 
 </html>
