@@ -49,10 +49,10 @@ class QuestionAnswer extends Deck
      * Sets  array of questions and answers.
      * @param array $questionAnswer associative array of strings
      */
-    public function setQuestionAnswer($index, $question, $answer)
+    public function setQuestionAnswer($deckId, $question, $answer)
     {
-        $this->_question[index] = $question;
-        $this->_answer[index] = $answer;
+        $this->_question[$deckId] = $question;
+        $this->_answer[$deckId] = $answer;
 
     }
 

@@ -49,17 +49,16 @@
     <h2 class="text-center my-4">Edit Flashcards</h2>
     <table class="table">
         <tr>
-            <th>Question</th>
-            <th>Answer</th>
+            <th >Question</th>
+            <th >Answer</th>
             <th>Edit Flashcard</th>
-            <th>Remove Flashcard</th>
         </tr>
 
         <repeat group="{{ @flashcards }}" value="{{ @flashcard }}">
             <tr id="{{ @flashcard['pairId'] }}">
                 <td>
                     <!--<div class="input-group">-->
-                        <textarea class="form-control" rows="4" style="resize:none">{{ @flashcard['question'] }}</textarea>
+                        <textarea class="form-control"  rows="5" style="resize:none">{{ @flashcard['question'] }}</textarea>
                         <!--<input type="text" class="form-control" value="{{ @flashcard['question'] }}">-->
                         <!--<div class="input-group-append">
                             <button class="btn btn-outline-secondary saveButton" type="button">Save</button>
@@ -68,7 +67,7 @@
                 </td>
 
                 <td>
-                    <textarea class="form-control" rows="4" style="resize:none">{{ @flashcard['answer'] }}</textarea>
+                    <textarea class="form-control" rows="5" style="resize:none">{{ @flashcard['answer'] }}</textarea>
                     <!--<div class="input-group">
                         <input type="text" class="form-control" value="{{ @flashcard['answer'] }}">
                         <div class="input-group-append">
@@ -78,11 +77,10 @@
                 </td>
 
                 <td>
-                    <a href="#" class="saveButton">Update Flashcard!</a>
-                </td>
-
-                <td>
-                    <a href="#" class="remove">Remove</a>
+                    <button class="btn btn-outline-warning" id ="saveButton" name ="saveButton">Update</button>
+                    <br/>
+                    <br>
+                    <button class="btn btn-outline-danger" id = "remove" name ="remove">Remove</button>
                 </td>
 
             </tr>
@@ -129,8 +127,24 @@
 
 <!-- Work in Progress -->
 <script>
+    //add save function to all saveButton elements
+    var buttons = document.querySelectorAll("button[name= 'saveButton']");
+    var i = 0, length = buttons.length;
+    for (i; i < length; i++) {
+        if (document.addEventListener) {
+            buttons[i].addEventListener("click", function() {
+                // use keyword this to target clicked button
+                addSaveEvent();
+            });
+        } else {
+            buttons[i].attachEvent("onclick", function() {
+                // use buttons[i] to target clicked button
+            });
+        };
+    };
+
     // edit/save buttons
-    $(".saveButton").click(function(){
+    function addSaveEvent(){
         alert("You clicked me! Theoretically, I trigger an event that will send an ajax request to update " +
             "the database, maybe only when a change is detected? I need the pairId - maybe stored as the id of " +
             "each ^tr^ tag. I also need to be able to identify if the input I am updating is a question or an " +
@@ -139,7 +153,7 @@
             "fields each time I'm clicked. Oh, I also need to retrieve the value entered into the input field to " +
             "send to the database. Probably the .val() function will come in handy... side note: input fields will " +
             "need to be validated before updating the database to verify the form is not empty.");
-    });
+    }
 
     $("#TextBoxDiv").hide();
 
@@ -173,8 +187,23 @@
         $("#TextBoxDiv").hide();
     }
 
+    var removeButtons = document.querySelectorAll("button[name= 'remove']");
+    var y = 0, ylength = removeButtons.length;
+    for (y; y < ylength; y++) {
+        if (document.addEventListener) {
+            removeButtons[y].addEventListener("click", function() {
+                // use keyword this to target clicked button
+                removeHandler();
+            });
+        } else {
+            removeButtons[y].attachEvent("onclick", function() {
+                // use buttons[y] to target clicked button
+            });
+        };
+    };
+
     // remove buttons
-    $(".remove").click(function() {
+    function removeHandler() {
         var confirmation = confirm("Are you positive you want to remove this flashcard from your study deck?");
         if (confirmation)
         {
@@ -182,7 +211,7 @@
                 "ajax to remove from the database so it doesn't repopulate the table with 'removed' flashcards " +
                 "upon refresh...");
         }
-    });
+    }
 </script>
 
 </body>

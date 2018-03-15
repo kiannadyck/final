@@ -1,7 +1,10 @@
 <?php
-/*
- * Kianna Dyck
- * Jen Shin
+/**
+ * This is the index page and controller for our Flashcards website.
+ * It manages all routes.
+ * index.php
+ * @author Kianna Dyck <kdyck@mail.greenriver.edu>, Jen Shin <jshin13@mail.greenriver.edu>
+ * @copyright 2018
  */
 
 // Error Reporting
@@ -12,7 +15,7 @@ error_reporting(E_ALL);
 require_once('vendor/autoload.php');
 
 //temp
-require_once('models/db-functions.php');
+include_once('models/db-functions.php');
 
 // Start a session
 session_start();
@@ -29,7 +32,7 @@ $f3->set('DEBUG', 3);
 // Define a default route (Home Page/View Decks Collection)
 $f3->route('GET|POST /', function($f3) {
 
-    global $dbh;
+//    global $dbh;
 
     //if not logged in, cannot get to inner pages
     if(!isset($_SESSION['userId'])) {
@@ -118,11 +121,7 @@ $f3->route('GET|POST /', function($f3) {
         }
         // store deck in session?
 
-
-
     }
-
-
 
     $template = new Template();
     echo $template->render('views/home.html');
