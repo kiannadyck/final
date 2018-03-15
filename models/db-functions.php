@@ -1,7 +1,20 @@
 <?php
+/**
+ * This file contains functions for flashcard website.
+ *
+ * db-functions.php
+ * @author Jen Shin <jshin13@mail.greenriver.edu>, Kianna Dyck <kdyck@mail.greenriver.edu>
+ * @copyright 2018
+ */
+
 // require database connection file
 //(probably need to change path)
-require ("/home/kdyckgre/final_config.php");
+require ("/home/jshingre/final_config.php");
+
+/**
+ * Creates connection to database.
+ * @return PDO, database connection
+ */
 
 function connect()
 {
@@ -17,6 +30,13 @@ function connect()
         return;
     }
 }
+
+/**
+ * Adds new user to database table.
+ * @param $email user email
+ * @param $password user password
+ * @return bool true if successfully added, else false
+ */
 
 function addNewUser($email, $password)
 {
@@ -40,6 +60,11 @@ function addNewUser($email, $password)
 
 }
 
+/**
+ * Gets user Id.
+ * @param $email user email
+ * @return int, user Id
+ */
 function getUser($email)
 {
     // after login
@@ -64,6 +89,12 @@ function getUser($email)
     return $result;
 }
 
+/**
+ * Adds a new deck.
+ * @param $deckName string, name of deck
+ * @param $userId int, user id
+ * @return bool true if added to database, else false
+ */
 function addNewDeck($deckName, $userId)
 {
     //database connection
@@ -84,6 +115,14 @@ function addNewDeck($deckName, $userId)
 
     return $success;
 }
+
+/**
+ * Adds flashcard pairs into database.
+ * @param $question string, question text
+ * @param $answer string, answer text
+ * @param $deckId int, deck id
+ * @return bool true if added successfully into database, else false
+ */
 
 function addPairsIntoDatabase($question, $answer, $deckId)
 {
@@ -125,6 +164,11 @@ function addPairsIntoDatabase($question, $answer, $deckId)
     return $isValid;
     }
 
+/**
+ * Retrieves user decks from database.
+ * @param $userId int, user id
+ * @return array user deck rows from database
+ */
 
 function getUserDecks($userId)
 {
@@ -152,6 +196,12 @@ function getUserDecks($userId)
     // returns all decks with userId
     return $result;
 }
+
+/**
+ * Retrieves deck flashcards (question and answers) from database.
+ * @param $deckId int, deck id
+ * @return array answers and questions from database
+ */
 
 function getDeckFlashcards($deckId)
 {
@@ -189,6 +239,10 @@ function editDeck()
 
 }
 
+/**
+ * Retrieves all users from database.
+ * @return array users from database
+ */
 function getAllUsers()
 {
     global $dbh;

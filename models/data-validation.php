@@ -1,15 +1,19 @@
 <?php
-/* Kianna Dyck
- * Jen Shin
+/**
+ * This file is the data validation page for our flashcards website.
+ *
+ * data-validation.php
  * 03/08/2018
- * This file contains data validation functions.
+ *
+ * @author Kianna Dyck <kdyck@mail.greenriver.edu>, Jen Shin<jshin13@mail.greenriver.edu>
+ * @copyright 2018
  */
 
-/* Home Page */
 
 // choose a deck select input
 // edit/play radio buttons
 /**
+ *
  * @param $input Selection from user
  * @param $options Options user can choose from to select
  * @return bool returns true if selected option is one of the available options to choose from, else returns false.
@@ -62,8 +66,9 @@ Array ( [0] => Array ( [deckName] => Kianna )
 // Question & Answer - if question is entered, answer is also entered and vice versa
 
 /**
- * @param $question Input from user for question.
- * @param $answer Input from user for answer.
+ * Checks if input for pairs are empty.
+ * @param $question string, Input from user for question.
+ * @param $answer string, Input from user for answer.
  * @return bool Returns true if both question and answer is entered. False otherwise.
  */
 function validPair($question, $answer)
