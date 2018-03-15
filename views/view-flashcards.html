@@ -67,8 +67,8 @@
 
                 </div>
                 <div class="card-footer">
-                    <button class="btn btn-outline-danger" id="showAnswer">Show Answer</button>
-                    <p id = "answer"><span class="font-weight-bold" >Answer:</span> {{ @flashcard['answer'] }}</p></div>
+                    <button class="btn btn-outline-danger showAnswer">Show Answer</button>
+                    <p class="answer"><span class="font-weight-bold" >Answer:</span> {{ @flashcard['answer'] }}</p></div>
             </div>
 
 
@@ -91,7 +91,11 @@
 <!-- bootstrap -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 <script>
-    $("#answer").hide();
+
+    // initial hide
+    $(".answer").hide();
+    // initial show answer
+    showAnswer();
 
     var slideIndex = 1;
     showDivs(slideIndex);
@@ -99,7 +103,8 @@
     function plusDivs(n) {
 
         showDivs(slideIndex += n);
-        $("#answer").hide();
+        $(".answer").hide(); // hide after transition to next card
+        $(".showAnswer").show(); // show button after clicking next or previous
     }
 
     function showDivs(n) {
@@ -127,16 +132,18 @@
     }
 
     function showAnswer() {
-        $("#showAnswer").click(function() {
-            $("#answer").show();
-            $("#showAnswer").hide();
+        $(".showAnswer").click(function() {
+            $(".answer").show();
+            $(".showAnswer").hide();
 
         });
     }
 
+
+
     $("#next").click(function() {
 
-        $("#answer").hide();
+        // $("#answer").hide();
 
         plusDivs(1);
 
@@ -145,7 +152,7 @@
 
     $("#previous").click(function() {
 
-        $("#answer").hide();
+        // $("#answer").hide();
 
         plusDivs(-1);
 
