@@ -52,6 +52,8 @@
     <div class="form-row">
         <div class="col-9">
             <input class="form-control" type="text" value="{{ @deckName }}" id="{{@deckId}}">
+            <input type='hidden' id='deckId' value='{{ $_SESSION["deckId"] }}' >
+
         </div>
         <div class="col-3">
             <button type="button" class="btn btn-outline-secondary" id="updateDeckName">Update Deck Name</button>
@@ -68,24 +70,15 @@
 
         <repeat group="{{ @flashcards }}" value="{{ @flashcard }}">
             <tr id="{{ @flashcard['pairId'] }}">
-                <td data-id="question">
+                <td>
                     <!--<div class="input-group">-->
                         <textarea class="form-control"  rows="5" style="resize:none">{{ @flashcard['question'] }}</textarea>
-                        <!--<input type="text" class="form-control" value="{{ @flashcard['question'] }}">-->
-                        <!--<div class="input-group-append">
-                            <button class="btn btn-outline-secondary saveButton" type="button">Save</button>
-                        </div>-->
-                    <!--</div>-->
+
                 </td>
 
-                <td data-id="answer">
+                <td>
                     <textarea class="form-control" rows="5" style="resize:none">{{ @flashcard['answer'] }}</textarea>
-                    <!--<div class="input-group">
-                        <input type="text" class="form-control" value="{{ @flashcard['answer'] }}">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary saveButton" type="button">Save</button>
-                        </div>
-                    </div>-->
+
                 </td>
 
                 <td>
@@ -99,7 +92,6 @@
         </repeat>
 
     </table>
-
     <!-- Add new flashcard -->
     <button type="button" class="btn btn-primary mb-4" id="addNew">Add new Flashcard</button>
 
@@ -136,57 +128,61 @@
 
 <!-- Work in Progress -->
 <script>
-    //add save function to all saveButton elements
-    var buttons = document.querySelectorAll("button[name= 'saveButton']");
-    var i = 0, length = buttons.length;
-    for (i; i < length; i++) {
-        if (document.addEventListener) {
-            buttons[i].addEventListener("click", function() {
+    addUpdateHandler();
+    removeHandler();
 
-                // get row button is in
-                var currentRow = $(this).closest('tr');
+    function addUpdateHandler() {
+        //add save function to all saveButton elements
+        var buttons = document.querySelectorAll("button[name= 'saveButton']");
+        var i = 0, length = buttons.length;
+        for (i; i < length; i++) {
+            if (document.addEventListener) {
+                buttons[i].addEventListener("click", function () {
 
-                // get the pairId stored in the row
-                var pairId = $(currentRow).attr('id');
+                    // get row button is in
+                    var currentRow = $(this).closest('tr');
 
-                // get the question text
-                var questionTd = currentRow.find("td:first-child");
-                var questionText = questionTd.find(":input").val();
+                    // get the pairId stored in the row
+                    var pairId = $(currentRow).attr('id');
 
-                // get the answer text
-                var answerTd = currentRow.find("td:nth-child(2)");
-                var answerText = answerTd.find(":input").val();
+                    // get the question text
+                    var questionTd = currentRow.find("td:first-child");
+                    var questionText = questionTd.find(":input").val();
 
-                $.post(
-                    //script we want to visit
-                    "models/edit.php",
-                    //data we want to pass(key-value)
-                    {
-                        pairId: pairId,
-                        question: questionText,
-                        answer: answerText,
-                        action: "updateRow"
-                    },
-                    function (result) {
-                        if (result == -1) {
-                            alert("Both question and answer fields cannot be empty.");
-                        } else if (result == 0) {
-                            alert("Unsuccessful update");
-                        } else {
-                            alert("Success!");
-                        }
-                    });
+                    // get the answer text
+                    var answerTd = currentRow.find("td:nth-child(2)");
+                    var answerText = answerTd.find(":input").val();
 
-                // use keyword this to target clicked button
-                // addSaveEvent();
-            });
-        } else {
-            buttons[i].attachEvent("onclick", function() {
-                // use buttons[i] to target clicked button
-            });
+                    $.post(
+                        //script we want to visit
+                        "models/edit.php",
+                        //data we want to pass(key-value)
+                        {
+                            pairId: pairId,
+                            question: questionText,
+                            answer: answerText,
+                            action: "updateRow"
+                        },
+                        function (result) {
+                            if (result == -1) {
+                                alert("Both question and answer fields cannot be empty.");
+                            } else if (result == 0) {
+                                alert("Unsuccessful update");
+                            } else {
+                                alert("Success!");
+                            }
+                        });
+
+                    // use keyword this to target clicked button
+                    // addSaveEvent();
+                });
+            } else {
+                buttons[i].attachEvent("onclick", function () {
+                    // use buttons[i] to target clicked button
+                });
+            };
         };
-    };
-
+    }
     // edit/save buttons
     function addSaveEvent(){
         alert("You clicked me! Theoretically, I trigger an event that will send an ajax request to update " +
@@ -227,66 +223,93 @@
 
     function savePair()
     {
-        alert("Gonna send your flashcard to the database. Validated, of course!");
+        var question = $("#question").val();
+        var answer = $("#answer").val();
+        var deckId = $("#deckId").val();
+
+        //alert(question +" " + answer + " " + deckId);
+
+        $.post(
+            //script we want to visit
+            "models/edit.php",
+            //data we want to pass(key-value)
+            {
+                question: question,
+                answer: answer,
+                deckId: deckId,
+                action: "addRow"
+            },
+            function (result) {
+
+                //add row from browser if true
+                if (result) {
+                    //append;
+                    var text = "<tr id='" + result + "'>";
+                    var tdQ = "<td><textarea class='form-control'  rows='5' style='resize:none'>" + question + "</textarea></td>";
+                    var tdA = "<td><textarea class='form-control'  rows='5' style='resize:none'>" + answer + "</textarea></td>";
+                    var buttons = "<td><button class='btn btn-outline-warning' id ='saveButton' name ='saveButton'>Update</button><br/><br>" +
+                        "<button class='btn btn-outline-danger' id = 'remove' name ='remove'>Remove</button></td></tr>";
+
+                    var table = $("table");
+                    table.append(text + tdQ + tdA + buttons);
+                    removeHandler();
+                    addUpdateHandler();
+
+                }
+                else {
+                    alert("Unsuccessful add");
+                }
+            });
+        //alert("Gonna send your flashcard to the database. Validated, of course!");
         $("#TextBoxDiv").hide();
     }
 
-    var removeButtons = document.querySelectorAll("button[name= 'remove']");
-    var y = 0, ylength = removeButtons.length;
-    for (y; y < ylength; y++) {
-        if (document.addEventListener) {
-            removeButtons[y].addEventListener("click", function () {
-                // get row button is in
-                var currentRow = $(this).closest('tr');
+    function removeHandler() {
+        var removeButtons = document.querySelectorAll("button[name= 'remove']");
+        var y = 0, ylength = removeButtons.length;
+        for (y; y < ylength; y++) {
+            if (document.addEventListener) {
+                removeButtons[y].addEventListener("click", function () {
+                    // get row button is in
+                    var currentRow = $(this).closest('tr');
 
-                // get the pairId stored in the row
-                var pairId = $(currentRow).attr('id');
+                    // get the pairId stored in the row
+                    var pairId = $(currentRow).attr('id');
 
-                // get the question text
-                // var questionTd = currentRow.find("td:first-child");
-                // var questionText = questionTd.find(":input").val();
+                    //send confirmation if user wants to delete row
+                    var proceed = confirm("Are you sure you want to remove this row?");
 
-                // get the answer text
-                // var answerTd = currentRow.find("td:nth-child(2)");
-                // var answerText = answerTd.find(":input").val();
+                    if (proceed) {
+                        $.post(
+                            //script we want to visit
+                            "models/edit.php",
+                            //data we want to pass(key-value)
+                            {
+                                pairId: pairId,
 
-                // testing to see if information was successfully retrieved
-                /*alert("Pair Id = " + pairId + "\n" +
-                    "Question = " + questionText + "\n" +
-                    "Answer = " + answerText);
-*/
-
-                //send confirmation if user wants to delete row
-                var proceed = confirm("Are you sure you want to remove this row?");
-
-                if(proceed){
-                $.post(
-                    //script we want to visit
-                    "models/edit.php",
-                    //data we want to pass(key-value)
-                    {pairId: pairId,
-                    action: "deleteRow"},
-                    //what we do with result - display petname in p
-                    function (result) {
+                                action: "deleteRow"
+                            },
+                            //what we do with result - display petname in p
+                            function (result) {
 
 
-                        //remove row from browser if true
-                        if (result) {
-                            currentRow.remove();
-                        }
-                        else {
-                            alert("Unsuccessful remove");
-                        }
-                    });
-                // use keyword this to target clicked button
-                // removeHandler();
-                }
+                                //remove row from browser if true
+                                if (result) {
+                                    currentRow.remove();
+                                }
+                                else {
+                                    alert("Unsuccessful remove");
+                                }
+                            });
+                        // use keyword this to target clicked button
+                        // removeHandler();
+                    }
 
 
-            });
+                });
+            }
         }
     }
-
     // remove buttons
     /*function removeHandler() {
         var currentRow = $(this).closest('tr');

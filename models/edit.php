@@ -16,6 +16,7 @@ $action = $_POST['action'];
 $pairId = $_POST['pairId'];
 $answer = $_POST['answer'];
 $question = $_POST['question'];
+$deckId = $_POST['deckId'];
 
 include_once('db-functions.php');
 include_once('data-validation.php');
@@ -31,7 +32,15 @@ if($action == "deleteRow") {
         echo -1;
     }
 } else if ($action == "addRow") {
-    echo addRow($deckId, $question, $answer);
+    //if valid, call db function
+    if(validPair($question, $answer)) {
+        $result = addRow($question, $answer, $deckId);
+        //return pairId
+        echo $dbh->lastInsertId();
+
+    } else { //not valid
+        echo -1;
+    }
 } else if ($action == "updateDeckName") {
     echo updateDeckName($deckId, $deckName);
 } else if ($action == "deleteDeck") {

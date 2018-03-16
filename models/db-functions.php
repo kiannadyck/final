@@ -9,7 +9,7 @@
 
 // require database connection file
 //(probably need to change path)
-require ("/home/kdyckgre/final_config.php");
+require ("/home/jshingre/final_config.php");
 
 /**
  * Creates connection to database.
@@ -136,10 +136,6 @@ function addPairsIntoDatabase($question, $answer, $deckId)
     $answerArray = $answer;
     $questionArray = $question;
 
-    //echo "HEY";
-    print_r($answerArray);
-    print_r($questionArray);
-
     //loop through array to assign variables
     for($i = 0; $i < sizeof($questionArray); $i++) {
         $question = $questionArray[$i];
@@ -162,7 +158,28 @@ function addPairsIntoDatabase($question, $answer, $deckId)
         }
     }
     return $isValid;
-    }
+}
+
+function addRow($question, $answer, $deckId)
+{
+
+    global $dbh;
+
+
+    $sql = "INSERT INTO flashcard (question, answer, deckId) VALUES (:question, :answer, :deckId)";
+
+    // 2. prepare the statement
+    $statement = $dbh->prepare($sql);
+
+    // 3. bind parameters
+    $statement->bindParam(':question', $question, PDO::PARAM_STR);
+    $statement->bindParam(':answer', $answer, PDO::PARAM_STR);
+    $statement->bindParam(':deckId', $deckId, PDO::PARAM_INT);
+
+    $success = $statement->execute();
+    return $success;
+
+}
 
 /**
  * Retrieves user decks from database.
@@ -282,6 +299,13 @@ function deleteRow($pairId)
     return $success;
 }
 
+/**
+ * Updates question and answer pair.
+ * @param $pairId int, pair id
+ * @param $question string, question
+ * @param $answer string, answer
+ * @return bool true if updated, else false
+ */
 function updateRow($pairId, $question, $answer)
 {
     global $dbh;
