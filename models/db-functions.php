@@ -9,7 +9,7 @@
 
 // require database connection file
 //(probably need to change path)
-require ("/home/kdyckgre/final_config.php");
+require ("/home/jshingre/final_config.php");
 
 /**
  * Creates connection to database.
@@ -262,4 +262,22 @@ function getAllUsers()
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     return $result;
+}
+
+/**
+ * Deletes a question answer pair from database.
+ * @param $pairId int, pair id
+ */
+function deleteRow($pairId)
+
+{
+    //connect to db
+    global $dbh;
+
+    $select = "DELETE from flashcard WHERE pairId=:pairId";
+    $statement = $dbh->prepare($select);
+    $statement->bindValue(':pairId', $pairId);
+
+    $success = $statement->execute();
+    return $success;
 }

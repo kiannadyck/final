@@ -54,7 +54,7 @@
             <input class="form-control" type="text" value="{{ @deckName }}" id="deckName">
         </div>
         <div class="col-3">
-            <button type="button" class="btn btn-outline-secondary" id="updateDeckName">Update</button>
+            <button type="button" class="btn btn-outline-secondary" id="updateDeckName">Update Deck Name</button>
             <button type="button" class="btn btn-outline-danger" id="deleteDeck">Delete Entire Deck</button>
         </div>
     </div>
@@ -131,11 +131,8 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
 <!--jQuery Library-->
-<script
-        src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous">
-</script>
+<script src="http://code.jquery.com/jquery.js"></script>
+
 
 <!-- Work in Progress -->
 <script>
@@ -203,7 +200,7 @@
     var y = 0, ylength = removeButtons.length;
     for (y; y < ylength; y++) {
         if (document.addEventListener) {
-            removeButtons[y].addEventListener("click", function() {
+            removeButtons[y].addEventListener("click", function () {
                 // get row button is in
                 var currentRow = $(this).closest('tr');
 
@@ -219,22 +216,43 @@
                 var answerText = answerTd.find(":input").val();
 
                 // testing to see if information was successfully retrieved
-                alert("Pair Id = " + pairId + "\n" +
+                /*alert("Pair Id = " + pairId + "\n" +
                     "Question = " + questionText + "\n" +
                     "Answer = " + answerText);
+*/
 
+                //send confirmation if user wants to delete row
+                var proceed = confirm("Are you sure you want to remove this row?");
+
+                if(proceed){
+                $.post(
+                    //script we want to visit
+                    "models/removeRow.php",
+                    //data we want to pass(key-value)
+                    {pairId: pairId},
+                    //what we do with result - display petname in p
+                    function (result) {
+
+
+                        //remove row from browser if true
+                        if (result) {
+                            currentRow.remove();
+                        }
+                        else {
+                            alert("Unsuccessful remove");
+                        }
+                    });
                 // use keyword this to target clicked button
                 // removeHandler();
+                }
+
+
             });
-        } else {
-            removeButtons[y].attachEvent("onclick", function() {
-                // use buttons[y] to target clicked button
-            });
-        };
-    };
+        }
+    }
 
     // remove buttons
-    function removeHandler() {
+    /*function removeHandler() {
         var currentRow = $(this).closest('tr');
         var pairId = $(currentRow).attr('id');
         alert(pairId);
@@ -246,7 +264,7 @@
                 "ajax to remove from the database so it doesn't repopulate the table with 'removed' flashcards " +
                 "upon refresh...");
         }*/
-    }
+
 </script>
 
 </body>
