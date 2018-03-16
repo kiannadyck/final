@@ -9,7 +9,7 @@
 
 // require database connection file
 //(probably need to change path)
-require ("/home/jshingre/final_config.php");
+require ("/home/kdyckgre/final_config.php");
 
 /**
  * Creates connection to database.
@@ -277,6 +277,20 @@ function deleteRow($pairId)
     $select = "DELETE from flashcard WHERE pairId=:pairId";
     $statement = $dbh->prepare($select);
     $statement->bindValue(':pairId', $pairId);
+
+    $success = $statement->execute();
+    return $success;
+}
+
+function updateRow($pairId, $question, $answer)
+{
+    global $dbh;
+
+    $select = "UPDATE flashcard SET question = :question, answer = :answer WHERE pairId=:pairId";
+    $statement = $dbh->prepare($select);
+    $statement->bindValue(':pairId', $pairId);
+    $statement->bindValue(':answer', $answer);
+    $statement->bindValue(':question', $question);
 
     $success = $statement->execute();
     return $success;
