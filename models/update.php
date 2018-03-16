@@ -14,7 +14,7 @@ $answer = $_POST['answer'];
 $question = $_POST['question'];
 
 //connect to db
-$ dbh= connect();
+$dbh= connect();
 
 //update using pairId
 /*UPDATE table_name
