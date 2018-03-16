@@ -76,6 +76,48 @@
 
 </div> <!-- container -->
 
+<!-- New User Modal -->
+<check if ="{{ @_COOKIE['user'] == 'new' }}">
+    <div class="modal fade" id="newUser">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Welcome to Flashcards!</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <h4>Getting Started</h4>
+                    <p class="lead">First begin by creating your very first deck!</p>
+
+                    <p>
+                        Start by deciding a name to identify your collection
+                    of flashcards. This name will show up in your list of available decks you can view to study from, accessed
+                    by clicking the Current Decks link at the top of the page, so make it something intuitive! You can make
+                    as many decks as you wish, with as many or few questions as you need.
+                    </p>
+
+                    <p>
+                        Each question entered requires an answer to be provided as well. Click on the add button below the
+                        question and answer forms to generate additional fields for adding new question/answer pairs.
+                        When you have finished, click the submit button found at the lower right to save your entire deck.
+                        Your deck will then be accessible to study from, or edit if you decide to add more flashcards to
+                        your deck, remove flashcards, or modify flashcards to better suit your studying needs.
+                    </p>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</check>
 
 
 <!-- Scripts -->
@@ -86,6 +128,21 @@
 <!-- bootstrap -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 <script>
+
+    var cookieName = 'user';
+    var cookies = document.cookie;
+
+    // get cookie pairs (this is an array if multiple cookies)
+    var cookie = cookies.split(';');
+
+    // cookie[0]
+    // user=new
+
+    var cookieValue = cookie[0].split('=')[1];
+
+    if (cookieValue == "new") {
+        $("#newUser").modal('show');
+    }
 
     var counter = 2;
 

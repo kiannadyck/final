@@ -224,9 +224,16 @@ $f3->route('GET|POST /create', function($f3) {
         $f3->reroute('/login');
 
     }
+
+    /*if(isset($_COOKIE['user']) && $_COOKIE['user'] == "new")
+    {
+        echo "Welcome to Flashcards!";
+
+    }*/
+
     $userId = $_SESSION['userId'];
 
-    //global $dbh;
+    global $dbh;
     $deckName = "";
     $question = array();
     $answer = array();
@@ -331,6 +338,7 @@ $f3->route('GET|POST /login', function($f3) {
                     } else {
                         //add user id to session
                         $_SESSION['userId'] = $result['userId'];
+                        setcookie("user", "returning");
                         $f3->reroute("/");
                     }
                 } else {
@@ -440,11 +448,12 @@ $f3->route('GET|POST /register', function($f3) {
             {
                 //add user id to session
                 $_SESSION['userId'] = $dbh->lastInsertId();
-                $f3->reroute("/");
-            } /*else {
-                $emailInUse = $email." already in use.";
-                $f3->set('emailInUse', $emailInUse);
-            }*/
+//                $f3->reroute("/");
+
+                // reroute new user to create a deck page
+                setcookie("user", "new");
+                $f3->reroute("/create");
+            }
         }
 
     }
