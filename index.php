@@ -53,21 +53,6 @@ $f3->route('GET|POST /', function($f3) {
         $decks[$deckOption['deckId']] = $deckOption['deckName'];
     }
 
-    /*
-     * Array received from database
-     *
-     * Array (
-     * [0] => Array (
-     *              [deckId] => 24
-     *              [deckName] => myFirstDeck
-     *               )
-     * [1] => Array (
-     *              [deckId] => 25
-     *              [deckName] => Second Deck is the Best
-     *              )
-     *      )
-     */
-
     // set decks array into hive
     $f3->set('options', $result);
 
@@ -80,7 +65,6 @@ $f3->route('GET|POST /', function($f3) {
         $deck = $_POST['deckOption'];
 
         $choice = $_POST['choice'];
-//        $choices = array('edit', 'play');
 
         // set deckId to a session to be grabbed by edit and play routes/pages
         $_SESSION['deckId'] = $deck;
@@ -88,34 +72,10 @@ $f3->route('GET|POST /', function($f3) {
         // Get deck name based on deckId
         $_SESSION['deckName'] = $decks[$deck];
 
-        // deckId test
-        /*echo $deck;*/
-
-//        $f3->set("deck", $deck);
-
         // Used for sticky radios
         $f3->set("choice", $choice);
 
         $isValid = true;
-
-        // validate data
-//        include 'models/data-validation.php';
-
-        /*$deckName = array();
-
-        foreach($result as $row) {
-            array_push($deckName, $row['deckName']);
-//        $deckName[] = $row['deckName'];
-        }*/
-
-        // choose a deck
-        /*if (!validSelection($deck, $result)) {
-            $isValid = false;
-        }
-
-        if(!validSelection($choice, $choices)) {
-            $isValid = false;
-        }*/
 
         // if data is valid, retrieve deck from database
         if($isValid) {
@@ -129,8 +89,6 @@ $f3->route('GET|POST /', function($f3) {
                 $f3->set('choiceErr', $choiceErr);
             }
         }
-        // store deck in session?
-
     }
 
     $template = new Template();
@@ -204,34 +162,7 @@ $f3->route('GET|POST /edit', function($f3) {
     }
 
 
-//    echo "<p>Selected Deck has id of: $deckId</p>"; // temp
-
     $result = getDeckFlashcards($deckId);
-    //print_r($result);
-
-    /* Array retrieved from database
-     *
-     * Array (
-     * [0] => Array ( [pairId] => 9
-     *                [question] => Is this a question?
-     *                [answer] => I suppose it is. )
-     *
-     * [1] => Array ( [pairId] => 10
-     *                [question] => "Peter Piper picked a peck of pickled peppers. A p
-     *                [answer] => Alliteration )
-     *
-     * [2] => Array ( [pairId] => 11
-     *                [question] => A line of verse with five metrical feet, each cons
-     *                [answer] => iambic pentameter )
-     *
-     * [3] => Array ( [pairId] => 12
-     *                [question] => "As brave as a lion" is an example of what poetic
-     *                [answer] => Simile )
-     *
-     * [4] => Array ( [pairId] => 13
-     *                [question] => Onomatopoeia is defined as _________________.
-     *                [answer] => The naming of a thing or action by a vocal imitati ) )
-     */
 
     // set flashcards array to hive
     $f3->set('flashcards', $result);
@@ -250,7 +181,6 @@ $f3->route('GET|POST /create', function($f3) {
     //if not logged in, cannot get to inner pages
     if(!isset($_SESSION['userId'])) {
         $f3->reroute('/login');
-
     }
 
     $userId = $_SESSION['userId'];
@@ -274,23 +204,14 @@ $f3->route('GET|POST /create', function($f3) {
         $question = $_POST['question'];
         $answer = $_POST['answer'];
 
-        //print_r($question);
-
-        //test
-        //print_r($_POST);
         if($isValid) {
             $success = addNewDeck($deckName, $userId);
             $deckId = $dbh->lastInsertId();
-            echo "<p>Deck Id: " . $deckId . "</p>";
 
             if ($success) {
-                echo "This was successful";
-
                 // check if there are cards to add
                 if (sizeof($question) > 0) {
                     //create new object
-                    //$newDeck = new questionAnswer($deckName, $question, $answer);
-                    echo "success is okay.";
                     addPairsIntoDatabase($question, $answer, $deckId);
                 }
 
@@ -318,8 +239,6 @@ $f3->route('GET|POST /login', function($f3) {
     $invalidEmail = "";
 
     if(isset($_POST['submit'])) {
-        // get post variables (username,password,password2)
-        // Array ( [username] => Kianna [password] => 123 [password2] => 123 [submit] => Create Account )
 
         $isValidEmail = true;
 
@@ -356,7 +275,6 @@ $f3->route('GET|POST /login', function($f3) {
                     if ($result['password'] != sha1($password)) {
 
                         $mismatchedPassword = "Password does not match the password stored for ".$email;
-                        /*$f3->set('mismatchedPassword', $mismatchedPassword);*/
                     } else {
                         //add user id to session
                         $_SESSION['userId'] = $result['userId'];
@@ -374,7 +292,7 @@ $f3->route('GET|POST /login', function($f3) {
 
         } // end of $isValidEmail
 
-    } // isset
+    }
 
     $template = new Template();
     echo $template->render('views/login.html');
@@ -385,13 +303,9 @@ $f3->route('GET|POST /register', function($f3) {
 
     global $dbh;
 
-    $mismatchedPassword = "";
-    /*$emailInUse= "";*/
     $invalidEmail = "";
 
     if(isset($_POST['submit'])) {
-        // get post variables (username,password,password2)
-        // Array ( [username] => Kianna [password] => 123 [password2] => 123 [submit] => Create Account )
 
         $email = $_POST['username']; // email
         $password = $_POST['password'];
@@ -399,28 +313,11 @@ $f3->route('GET|POST /register', function($f3) {
         $isValid = true;
         $found = false;
 
-        // validation (move to different page later)
-        // validate email
-
-        /* Array retrieved from database of stored users */
-
-        //        Array (
-        // [0] => Array ( [email] => )
-        // [1] => Array ( [email] => jen@mail.com )
-        // [2] => Array ( [email] => jen@test.om )
-        // [3] => Array ( [email] => jk@lol.com )
-        // [4] => Array ( [email] => jshin13@mail.com )
-        // [5] => Array ( [email] => ki@mail.com )
-        // [6] => Array ( [email] => kiwi@fruitylicious.com )
-        // [7] => Array ( [email] => test3@email.com ) )
-
         if (empty($email)) {
             $invalidEmail = "Please enter an email.";
-            /*$f3->set('emailFormat', $emailNotValidFormat);*/
             $isValid = false;
         } else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $invalidEmail = "$email is not a valid email address";
-            /*$f3->set('emailFormat', $emailNotValidFormat);*/
             $isValid = false;
         } else {
             // retrieve all users currently stored in database
@@ -453,7 +350,6 @@ $f3->route('GET|POST /register', function($f3) {
             $isValid = false;
         }
 
-
         /* Set Hive Variables */
         $f3->set('invalidEmail', $invalidEmail);
         $f3->set('mismatchedPassword', $mismatchedPassword);
@@ -470,7 +366,6 @@ $f3->route('GET|POST /register', function($f3) {
             {
                 //add user id to session
                 $_SESSION['userId'] = $dbh->lastInsertId();
-//                $f3->reroute("/");
 
                 // reroute new user to create a deck page
                 setcookie("user", "new");

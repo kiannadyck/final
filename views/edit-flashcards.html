@@ -338,6 +338,39 @@
             }
         }
     }
+
+    $("#deleteDeck").click(function() {
+        var deckId = $("#deckId").val();
+
+        //send confirmation if user wants to delete row
+        var proceed = confirm("Are you sure you want to remove this deck?");
+
+        if (proceed) {
+            $.post(
+                //script we want to visit
+                "models/edit.php",
+                //data we want to pass(key-value)
+                {
+                    deckId: deckId,
+
+                    action: "deleteDeck"
+                },
+                //what we do with result - display petname in p
+                function (result) {
+
+
+                    if (result) {
+                        //redirect to home
+                        window.location.replace("328/final/");
+                    }
+                    else {
+                        alert("Unsuccessful remove");
+                    }
+                });
+            // use keyword this to target clicked button
+            // removeHandler();
+        }
+    });
     // remove buttons
     /*function removeHandler() {
         var currentRow = $(this).closest('tr');

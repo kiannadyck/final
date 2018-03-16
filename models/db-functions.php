@@ -332,3 +332,26 @@ function updateDeckName($deckId, $deckName)
     $success = $statement->execute();
     return $success;
 }
+
+function deleteDeck($deckId)
+{
+    global $dbh;
+
+    //delete flashcards
+
+    $select = "DELETE from flashcard WHERE deckId=:deckId";
+    $statement = $dbh->prepare($select);
+    $statement->bindValue(':deckId', $deckId);
+
+    $success = $statement->execute();
+
+    if ($success) {
+        //delete deck
+        $select = "DELETE from decks WHERE deckId=:deckId";
+        $statement = $dbh->prepare($select);
+        $statement->bindValue(':deckId', $deckId);
+
+        $success = $statement->execute();
+    }
+    return $success;
+}
