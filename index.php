@@ -33,7 +33,7 @@ $f3->set('DEBUG', 3);
 // Define a default route (Home Page/View Decks Collection)
 $f3->route('GET|POST /', function($f3) {
 
-//    global $dbh;
+    global $dbh;
 
     //if not logged in, cannot get to inner pages
     if(!isset($_SESSION['userId'])) {
@@ -281,7 +281,7 @@ $f3->route('GET|POST /create', function($f3) {
 // Define route for login
 $f3->route('GET|POST /login', function($f3) {
 
-   // global $dbh;
+    global $dbh;
     $email = "";
     $password = "";
 
@@ -353,7 +353,7 @@ $f3->route('GET|POST /login', function($f3) {
 // Define route for registration of new users
 $f3->route('GET|POST /register', function($f3) {
 
-   // global $dbh;
+    global $dbh;
 
     $mismatchedPassword = "";
     /*$emailInUse= "";*/
