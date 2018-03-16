@@ -342,7 +342,8 @@ $f3->route('GET|POST /register', function($f3) {
         $mismatchedPassword = notEmptyMismatched($password, $password2);
         if($mismatchedPassword == null) {
             if(!validPassword($password)) {
-                $mismatchedPassword = "Passwords must be atleast 6 characters long and contain an uppercase letter, a number, and a symbol.";
+                $mismatchedPassword = "Passwords must be at least 6 characters long and contain an uppercase letter,
+                 a lowercase letter, a number, and a symbol.";
                 $isValid = false;
             }
 
