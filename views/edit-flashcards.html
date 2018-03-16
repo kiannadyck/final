@@ -47,11 +47,11 @@
 
 <div class="container">
     <h2 class="text-center my-4">Edit Deck</h2>
-    <label class="form-control-label" for="deckName">Current Deck name: </label>
+    <label class="form-control-label">Current Deck name: </label>
 
     <div class="form-row">
         <div class="col-9">
-            <input class="form-control" type="text" value="{{ @deckName }}" id="deckName">
+            <input class="form-control" type="text" value="{{ @deckName }}" id="{{@deckId}}">
         </div>
         <div class="col-3">
             <button type="button" class="btn btn-outline-secondary" id="updateDeckName">Update Deck Name</button>
@@ -142,8 +142,43 @@
     for (i; i < length; i++) {
         if (document.addEventListener) {
             buttons[i].addEventListener("click", function() {
+
+                // get row button is in
+                var currentRow = $(this).closest('tr');
+
+                // get the pairId stored in the row
+                var pairId = $(currentRow).attr('id');
+
+                // get the question text
+                var questionTd = currentRow.find("td:first-child");
+                var questionText = questionTd.find(":input").val();
+
+                // get the answer text
+                var answerTd = currentRow.find("td:nth-child(2)");
+                var answerText = answerTd.find(":input").val();
+
+                $.post(
+                    //script we want to visit
+                    "models/edit.php",
+                    //data we want to pass(key-value)
+                    {
+                        pairId: pairId,
+                        question: questionText,
+                        answer: answerText,
+                        action: "updateRow"
+                    },
+                    function (result) {
+                        if (result == -1) {
+                            alert("Both question and answer fields cannot be empty.");
+                        } else if (result == 0) {
+                            alert("Unsuccessful update");
+                        } else {
+                            alert("Success!");
+                        }
+                    });
+
                 // use keyword this to target clicked button
-                addSaveEvent();
+                // addSaveEvent();
             });
         } else {
             buttons[i].attachEvent("onclick", function() {
@@ -208,12 +243,12 @@
                 var pairId = $(currentRow).attr('id');
 
                 // get the question text
-                var questionTd = currentRow.find("td:first-child");
-                var questionText = questionTd.find(":input").val();
+                // var questionTd = currentRow.find("td:first-child");
+                // var questionText = questionTd.find(":input").val();
 
                 // get the answer text
-                var answerTd = currentRow.find("td:nth-child(2)");
-                var answerText = answerTd.find(":input").val();
+                // var answerTd = currentRow.find("td:nth-child(2)");
+                // var answerText = answerTd.find(":input").val();
 
                 // testing to see if information was successfully retrieved
                 /*alert("Pair Id = " + pairId + "\n" +
@@ -227,9 +262,10 @@
                 if(proceed){
                 $.post(
                     //script we want to visit
-                    "models/removeRow.php",
+                    "models/edit.php",
                     //data we want to pass(key-value)
-                    {pairId: pairId},
+                    {pairId: pairId,
+                    action: "deleteRow"},
                     //what we do with result - display petname in p
                     function (result) {
 
