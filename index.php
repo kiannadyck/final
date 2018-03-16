@@ -225,12 +225,6 @@ $f3->route('GET|POST /create', function($f3) {
 
     }
 
-    /*if(isset($_COOKIE['user']) && $_COOKIE['user'] == "new")
-    {
-        echo "Welcome to Flashcards!";
-
-    }*/
-
     $userId = $_SESSION['userId'];
 
     global $dbh;
