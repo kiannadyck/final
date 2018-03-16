@@ -66,6 +66,8 @@
 
             <label class="form-control-label" for="password">Confirm Password</label>
             <input class="form-control" type="password" name="password2" id="password2">
+            <br/>
+            <span id="message"></span>
 
 
             <!-- Error message for password -->
@@ -92,7 +94,59 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <!-- bootstrap -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script>
+    /*$(document).ready(function () {
+        $("#password").keyup(checkPW);
+    });
+    function checkPW() {
+        var pw = $("#password").val();
+        var message = document.getElementById("message");
+        if(pw.length < 6) {
+            message.innerHTML = "Password must be atleast 6 characters long.";
+        }
+        else if (!checkLower(pw)) {
+            message.innerHTML = "Password must include a lowercase letter.";
 
+        }
+        else if (!checkUpper(pw)) {
+            message.innerHTML = "Password must include an uppercase letter.";
+
+        }
+        else if (!checkNumber(pw)) {
+            message.innerHTML = "Password must include a number.";
+        }
+        else if (checkLower(pw) && checkNumber(pw) && checkSymbol(pw) && checkUpper(pw) && pw.length >= 6) {
+            //  alert("Password must be more than 6 characters and contain a uppercase letter, a lowercase letter, a symbol, and a number.");
+            //}
+            message.HTML("");
+        }
+    }
+    function checkUpper(pw) {
+        var pattern = /[A-Z]/;
+        var regex = new RegExp(pattern);
+        var n = pw.search(regex);
+        return n >= 0;
+    }
+    function checkLower(pw) {
+        var pattern = /[a-z]/;
+        var regex = new RegExp(pattern);
+        var n = pw.search(regex);
+        return n >= 0;
+    }
+    function checkNumber(pw) {
+        var pattern = /[A-Z]/;
+        var regex = new RegExp(pattern);
+        var n = pw.search(regex);
+        return n >= 0;
+    }
+    function checkSymbol(pw) {
+        var pattern = /[^\w]/;
+        var regex = new RegExp(pattern);
+        var n = pw.search(regex);
+        return n >= 0;
+    }
+*/
+</script>
 </body>
 
 </html>

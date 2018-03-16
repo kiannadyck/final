@@ -16,6 +16,7 @@ require_once('vendor/autoload.php');
 
 //temp
 include_once('models/db-functions.php');
+include_once ('models/data-validation.php');
 
 // Start a session
 session_start();
@@ -225,7 +226,7 @@ $f3->route('GET|POST /create', function($f3) {
     }
     $userId = $_SESSION['userId'];
 
-    global $dbh;
+    //global $dbh;
     $deckName = "";
     $question = array();
     $answer = array();
@@ -280,7 +281,7 @@ $f3->route('GET|POST /create', function($f3) {
 // Define route for login
 $f3->route('GET|POST /login', function($f3) {
 
-    global $dbh;
+   // global $dbh;
     $email = "";
     $password = "";
 
@@ -352,7 +353,7 @@ $f3->route('GET|POST /login', function($f3) {
 // Define route for registration of new users
 $f3->route('GET|POST /register', function($f3) {
 
-    global $dbh;
+   // global $dbh;
 
     $mismatchedPassword = "";
     /*$emailInUse= "";*/
@@ -410,13 +411,15 @@ $f3->route('GET|POST /register', function($f3) {
             }
         }
 
-        // validate password
-        if(empty($password) || empty($password2)) {
-            $mismatchedPassword = "Please enter a password";
-            $isValid = false;
-        }
-        if($password != $password2) {
-            $mismatchedPassword = "Passwords do not match.";
+    //validate passwords
+        $mismatchedPassword = notEmptyMismatched($password, $password2);
+        if($mismatchedPassword == null) {
+            if(!validPassword($password)) {
+                $mismatchedPassword = "Passwords must be atleast 6 characters long and contain an uppercase letter, a number, and a symbol.";
+                $isValid = false;
+            }
+
+        } else {
             $isValid = false;
         }
 

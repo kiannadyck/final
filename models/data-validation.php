@@ -79,6 +79,36 @@ function validPair($question, $answer)
 /* Login Page */
 
 // valid username/email entered
+// validate password
+function notEmptyMismatched($password, $password2)
+{
+    if (empty($password) || empty($password2)) {
+        return "Please enter a password";
+        //$isValid = false;
+    }
+    if ($password != $password2) {
+        return "Passwords do not match.";
+        //$isValid = false;
+    }
+    return null;
+}
+
+/**
+ * Checks if a password has one uppercase, one lowercase, one number, one special char, and is atleast 6 char long.
+ * @param $password string, user input
+ * @return bool true if valid password, else false
+ */
+function validPassword($password) {
+    $uppercase = preg_match('@[A-Z]@', $password);
+    $lowercase = preg_match('@[a-z]@', $password);
+    $number    = preg_match('@[0-9]@', $password);
+    $specialChars = preg_match('@[^\w]@', $password);
+
+    if(!$specialChars || !$uppercase || !$lowercase || !$number || strlen($password) < 5) {
+        return false;
+    }
+    return true;
+}
 
 // password matches with password stored for given username/email
 
