@@ -191,11 +191,23 @@ $f3->route('GET|POST /edit', function($f3) {
     }
 
     $deckId = $_SESSION['deckId'];
-    $deckName = $_SESSION['deckName'];
+    // get userId of currently logged in user
+    $userId = $_SESSION['userId'];
+
+    // Retrieve decks for logged in user from database
+    $result = getUserDecks($userId);
+
+    $decks = array();
+    foreach($result as $deckOption)
+    {
+        $decks[$deckOption['deckId']] = $deckOption['deckName'];
+    }
+
+
 //    echo "<p>Selected Deck has id of: $deckId</p>"; // temp
 
     $result = getDeckFlashcards($deckId);
-    print_r($result);
+    //print_r($result);
 
     /* Array retrieved from database
      *
@@ -225,7 +237,7 @@ $f3->route('GET|POST /edit', function($f3) {
     $f3->set('flashcards', $result);
     // set deck information to hive
     $f3->set('deckId', $deckId);
-    $f3->set('deckName', $deckName);
+    $f3->set('deckName', $decks[$deckId]);
 
 
     $template = new Template();

@@ -50,12 +50,12 @@
     <label class="form-control-label">Current Deck name: </label>
 
     <div class="form-row">
-        <div class="col-9">
-            <input class="form-control" type="text" value="{{ @deckName }}" id="{{@deckId}}">
+        <div class="col-8">
+            <input class="form-control" type="text" value="{{ @deckName }}" id="deckName">
             <input type='hidden' id='deckId' value='{{ $_SESSION["deckId"] }}' >
 
         </div>
-        <div class="col-3">
+        <div class="col-4">
             <button type="button" class="btn btn-outline-secondary" id="updateDeckName">Update Deck Name</button>
             <button type="button" class="btn btn-outline-danger" id="deleteDeck">Delete Entire Deck</button>
         </div>
@@ -207,6 +207,34 @@
             $(this).text("Add new Flashcard");
             savePair();
         };
+
+    });
+
+    $("#updateDeckName").click(function(){
+        var deckName = $("#deckName").val();
+        var deckId = $("#deckId").val();
+
+        $.post(
+            //script we want to visit
+            "models/edit.php",
+            //data we want to pass(key-value)
+            {
+                deckName: deckName,
+                deckId: deckId,
+                action: "updateDeckName"
+            },
+            function (result) {
+
+                //update name in database
+                if (result) {
+                    alert("Deck name saved.");
+                }
+                else if (result == -1) {
+                    alert("Deck name cannot be empty");
+                } else {
+                    alert("Unsuccessful.");
+                }
+            });
 
     });
 

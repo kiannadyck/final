@@ -17,6 +17,8 @@ $pairId = $_POST['pairId'];
 $answer = $_POST['answer'];
 $question = $_POST['question'];
 $deckId = $_POST['deckId'];
+$deckName = $_POST['deckName'];
+
 
 include_once('db-functions.php');
 include_once('data-validation.php');
@@ -42,7 +44,11 @@ if($action == "deleteRow") {
         echo -1;
     }
 } else if ($action == "updateDeckName") {
-    echo updateDeckName($deckId, $deckName);
+    if(!empty($deckName)){
+        echo updateDeckName($deckId, $deckName);
+    } else {
+        echo -1;
+    }
 } else if ($action == "deleteDeck") {
     echo deleteDeck($deckId);
 }

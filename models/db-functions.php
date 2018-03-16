@@ -319,3 +319,16 @@ function updateRow($pairId, $question, $answer)
     $success = $statement->execute();
     return $success;
 }
+
+function updateDeckName($deckId, $deckName)
+
+{
+    global $dbh;
+    $select = "UPDATE decks SET deckName = :deckName WHERE deckId = :deckId";
+    $statement = $dbh->prepare($select);
+    $statement->bindValue(':deckId', $deckId);
+    $statement->bindValue(':deckName', $deckName);
+
+    $success = $statement->execute();
+    return $success;
+}
