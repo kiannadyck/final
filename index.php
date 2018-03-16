@@ -47,6 +47,12 @@ $f3->route('GET|POST /', function($f3) {
     // Retrieve decks for logged in user from database
     $result = getUserDecks($userId);
 
+    $decks = array();
+    foreach($result as $deckOption)
+    {
+        $decks[$deckOption['deckId']] = $deckOption['deckName'];
+    }
+
     /*
      * Array received from database
      *
@@ -79,6 +85,9 @@ $f3->route('GET|POST /', function($f3) {
         // set deckId to a session to be grabbed by edit and play routes/pages
         $_SESSION['deckId'] = $deck;
 
+        // Get deck name based on deckId
+        $_SESSION['deckName'] = $decks[$deck];
+
         // deckId test
         /*echo $deck;*/
 
@@ -90,7 +99,7 @@ $f3->route('GET|POST /', function($f3) {
         $isValid = true;
 
         // validate data
-        include 'models/data-validation.php';
+//        include 'models/data-validation.php';
 
         /*$deckName = array();
 
@@ -137,6 +146,7 @@ $f3->route('GET|POST /play', function($f3) {
     }
 
     $deckId = $_SESSION['deckId'];
+    $deckName = $_SESSION['deckName'];
 
     // retrieve all flashcards with given deckId from database
     $result = getDeckFlashcards($deckId);
@@ -166,6 +176,7 @@ $f3->route('GET|POST /play', function($f3) {
 
     // set shuffled flashcards array to hive
     $f3->set('flashcards', $shuffled);
+    $f3->set('deckName', $deckName);
 
     $template = new Template();
     echo $template->render('views/view-flashcards.html');
@@ -180,6 +191,7 @@ $f3->route('GET|POST /edit', function($f3) {
     }
 
     $deckId = $_SESSION['deckId'];
+    $deckName = $_SESSION['deckName'];
 //    echo "<p>Selected Deck has id of: $deckId</p>"; // temp
 
     $result = getDeckFlashcards($deckId);
@@ -211,6 +223,10 @@ $f3->route('GET|POST /edit', function($f3) {
 
     // set flashcards array to hive
     $f3->set('flashcards', $result);
+    // set deck information to hive
+    $f3->set('deckId', $deckId);
+    $f3->set('deckName', $deckName);
+
 
     $template = new Template();
     echo $template->render('views/edit-flashcards.html');

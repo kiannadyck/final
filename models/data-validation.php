@@ -18,8 +18,8 @@
  * @param $options Options user can choose from to select
  * @return bool returns true if selected option is one of the available options to choose from, else returns false.
  */
-function validSelection($input, $options)
-{
+/*function validSelection($input, $options)
+{*/
 /*
 Array ( [0] => Array ( [deckName] => Kianna )
 [1] => Array ( [deckName] => Bob )
@@ -47,7 +47,7 @@ Array ( [0] => Array ( [deckName] => Kianna )
     return false;*/
 
 
-}
+//}
 
 /* Create New Deck Page */
 

@@ -46,8 +46,20 @@
 </nav> <!-- nav -->
 
 <div class="container">
-    <h2 class="text-center my-4">Edit Flashcards</h2>
-    <table class="table">
+    <h2 class="text-center my-4">Edit Deck</h2>
+    <label class="form-control-label" for="deckName">Current Deck name: </label>
+
+    <div class="form-row">
+        <div class="col-9">
+            <input class="form-control" type="text" value="{{ @deckName }}" id="deckName">
+        </div>
+        <div class="col-3">
+            <button type="button" class="btn btn-outline-secondary" id="updateDeckName">Update</button>
+            <button type="button" class="btn btn-outline-danger" id="deleteDeck">Delete Entire Deck</button>
+        </div>
+    </div>
+
+    <table class="table mt-4">
         <tr>
             <th >Question</th>
             <th >Answer</th>
