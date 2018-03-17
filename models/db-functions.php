@@ -12,7 +12,7 @@
 $j = "jshingre";
 $k = "kdyckgre";
 
-require ("/home/".$k."/final_config.php");
+require ("/home/".$j."/final_config.php");
 
 /**
  * Creates connection to database.
