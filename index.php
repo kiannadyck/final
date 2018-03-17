@@ -38,7 +38,6 @@ $f3->route('GET|POST /', function($f3) {
     //if not logged in, cannot get to inner pages
     if(!isset($_SESSION['userId'])) {
         $f3->reroute('/login');
-
     }
 
     // get userId of currently logged in user
@@ -48,8 +47,7 @@ $f3->route('GET|POST /', function($f3) {
     $result = getUserDecks($userId);
 
     $decks = array();
-    foreach($result as $deckOption)
-    {
+    foreach($result as $deckOption) {
         $decks[$deckOption['deckId']] = $deckOption['deckName'];
     }
 
@@ -57,8 +55,7 @@ $f3->route('GET|POST /', function($f3) {
     $f3->set('options', $result);
 
 
-    if(isset($_POST['submit']))
-    {
+    if(isset($_POST['submit'])) {
         // retrieve values from POST array
 
         // this retrieves the value attribute stored in each option. This value is the deckId.
@@ -100,7 +97,6 @@ $f3->route('GET|POST /play', function($f3) {
     //if not logged in, cannot get to inner pages
     if(!isset($_SESSION['userId'])) {
         $f3->reroute('/login');
-
     }
 
     $deckId = $_SESSION['deckId'];
@@ -111,8 +107,7 @@ $f3->route('GET|POST /play', function($f3) {
 
     // convert retrieved deck into an associative array
     $flashcards = array();
-    foreach($result as $flashcard)
-    {
+    foreach($result as $flashcard) {
         $question = $flashcard['question'];
         $answer = $flashcard['answer'];
         $flashcards[$question] = $answer;
@@ -120,8 +115,7 @@ $f3->route('GET|POST /play', function($f3) {
 
     // shuffle deck while preserving key=>value pairs
     $shuffled = array();
-    while(!empty($flashcards))
-    {
+    while(!empty($flashcards)) {
         // select one random key from our associative array
         $randomKey = array_rand($flashcards, 1);
 
@@ -145,7 +139,6 @@ $f3->route('GET|POST /edit', function($f3) {
     //if not logged in, cannot get to inner pages
     if(!isset($_SESSION['userId'])) {
         $f3->reroute('/login');
-
     }
 
     $deckId = $_SESSION['deckId'];
@@ -156,11 +149,9 @@ $f3->route('GET|POST /edit', function($f3) {
     $result = getUserDecks($userId);
 
     $decks = array();
-    foreach($result as $deckOption)
-    {
+    foreach($result as $deckOption) {
         $decks[$deckOption['deckId']] = $deckOption['deckName'];
     }
-
 
     $result = getDeckFlashcards($deckId);
 
@@ -169,7 +160,6 @@ $f3->route('GET|POST /edit', function($f3) {
     // set deck information to hive
     $f3->set('deckId', $deckId);
     $f3->set('deckName', $decks[$deckId]);
-
 
     $template = new Template();
     echo $template->render('views/edit-flashcards.html');
@@ -218,10 +208,8 @@ $f3->route('GET|POST /create', function($f3) {
             } else {
                 $invalidDeckName = $deckName . " is already taken. Create a deck with different name.";
                 $f3->set('invalidDeckName', $invalidDeckName);
-
             }
         }
-
     }
 
     $template = new Template();
@@ -259,8 +247,7 @@ $f3->route('GET|POST /login', function($f3) {
         $f3->set('invalidEmail', $invalidEmail);
         $f3->set('mismatchedPassword', $mismatchedPassword);
 
-        if($isValidEmail)
-        {
+        if($isValidEmail) {
             // check if username and password match stored credentials
 
             // retrieve userid
@@ -373,7 +360,6 @@ $f3->route('GET|POST /register', function($f3) {
                 $f3->reroute("/create");
             }
         }
-
     }
 
     $template = new Template();
