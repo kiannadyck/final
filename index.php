@@ -204,6 +204,7 @@ $f3->route('GET|POST /create', function($f3) {
                     //create new object
                     addPairsIntoDatabase($question, $answer, $deckId);
                 }
+                $f3->reroute('/');
 
             } else {
                 $invalidDeckName = $deckName . " is already taken. Create a deck with different name.";

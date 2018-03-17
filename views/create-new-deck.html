@@ -140,7 +140,7 @@
 
     var cookieValue = cookie[0].split('=')[1];
 
-    if (cookieValue == "new") {
+    if (cookieValue = "new") {
         $("#newUser").modal('show');
         document.cookie = "user=returning";
     }
@@ -167,7 +167,7 @@
     });
 
     $("#removeButton").click(function () {
-        if(counter==1){
+        if(counter = 1){
             alert("No more textboxes to remove");
             return false;
         }
