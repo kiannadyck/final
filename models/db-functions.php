@@ -9,7 +9,10 @@
 
 // require database connection file
 //(probably need to change path)
-require ("/home/jshingre/final_config.php");
+$j = "jshingre";
+$k = "kdyckgre";
+
+require ("/home/".$k."/final_config.php");
 
 /**
  * Creates connection to database.
@@ -20,10 +23,7 @@ function connect()
 {
     try {
         // instantiate a PDO object using a PDO constructor
-        $dbh = new PDO(DB_DSN,
-            DB_USERNAME,
-            DB_PASSWORD);
-//        echo "Connected to database!";
+        $dbh = new PDO(DB_DSN,DB_USERNAME,DB_PASSWORD);
         return $dbh;
     } catch (PDOException $e) {
         echo $e->getMessage();
@@ -65,6 +65,7 @@ function addNewUser($email, $password)
  * @param $email user email
  * @return int, user Id
  */
+
 function getUser($email)
 {
     // after login
@@ -95,6 +96,7 @@ function getUser($email)
  * @param $userId int, user id
  * @return bool true if added to database, else false
  */
+
 function addNewDeck($deckName, $userId)
 {
     //database connection
@@ -117,7 +119,7 @@ function addNewDeck($deckName, $userId)
 }
 
 /**
- * Adds flashcard pairs into database.
+ * Adds arrays of flashcard pairs into database.
  * @param $question string, question text
  * @param $answer string, answer text
  * @param $deckId int, deck id
@@ -126,13 +128,11 @@ function addNewDeck($deckName, $userId)
 
 function addPairsIntoDatabase($question, $answer, $deckId)
 {
-    //get both arrays from user object
-    //$answerArray = $object -> getQuestions();
-    //$questionArray = $object -> getAnswers();
     global $dbh;
 
     $isValid = true;
 
+    //get both arrays from user object
     $answerArray = $answer;
     $questionArray = $question;
 
@@ -160,11 +160,17 @@ function addPairsIntoDatabase($question, $answer, $deckId)
     return $isValid;
 }
 
+/**
+ * Adds a new question and answer pair to database.
+ * @param $question string, user input
+ * @param $answer string, user input
+ * @param $deckId int, deck id
+ * @return bool true if added to database, else false
+ */
+
 function addRow($question, $answer, $deckId)
 {
-
     global $dbh;
-
 
     $sql = "INSERT INTO flashcard (question, answer, deckId) VALUES (:question, :answer, :deckId)";
 
@@ -178,7 +184,6 @@ function addRow($question, $answer, $deckId)
 
     $success = $statement->execute();
     return $success;
-
 }
 
 /**
@@ -208,7 +213,6 @@ function getUserDecks($userId)
 
     // 5. Return the result
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-
 
     // returns all decks with userId
     return $result;
@@ -243,17 +247,6 @@ function getDeckFlashcards($deckId)
 
     // returns all flashcards with given deckId
     return $result;
-}
-
-function saveDeck()
-{
-    // save deck name & flashcards inside deck
-}
-
-// edit flashcards in deck (add/remove/update)
-function editDeck()
-{
-
 }
 
 /**
@@ -320,6 +313,12 @@ function updateRow($pairId, $question, $answer)
     return $success;
 }
 
+/**
+ * Updates deck name on edit page.
+ * @param $deckId int, deck id
+ * @param $deckName string, deck name
+ * @return bool true if updated successfully, else false
+ */
 function updateDeckName($deckId, $deckName)
 
 {
@@ -332,6 +331,12 @@ function updateDeckName($deckId, $deckName)
     $success = $statement->execute();
     return $success;
 }
+
+/**
+ * Deletes a whole deck and all its frlashcards from the database.
+ * @param $deckId int, deck id
+ * @return bool true if updated successfully, else false
+ */
 
 function deleteDeck($deckId)
 {

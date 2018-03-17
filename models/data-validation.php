@@ -1,6 +1,7 @@
 <?php
 /**
  * This file is the data validation page for our flashcards website.
+ * It validates if passwords match or if fields are empty.
  *
  * data-validation.php
  * 03/08/2018
@@ -20,7 +21,12 @@ function validPair($question, $answer)
     return !empty($question) && !empty($answer);
 }
 
-
+/**
+ * Checks if passwords match
+ * @param $password string, password
+ * @param $password2 string, confirm password
+ * @return null|string error message
+ */
 // validate password
 function notEmptyMismatched($password, $password2)
 {
