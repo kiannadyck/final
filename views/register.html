@@ -118,7 +118,8 @@
 
     //validate();
     //confirm that password fields match, otherwise disable submit
-    $('#password, #password2').on('keyup', function () {
+    // keyup
+    $('#password, #password2').on('blur', function () {
         if($('#password').val() != "" && $('#password2').val != "") {
             $('#message').show();
 
@@ -158,7 +159,8 @@
 
 
     $(document).ready(function () {
-        $("#username").keyup(validate);
+        //keyup
+        $("#username").blur(validate);
     });
 
     function validateEmail(email) {
@@ -172,6 +174,7 @@
         var result = $("#result");
         var email = $("#username").val();
         result.html("");
+
         if(email != "") {
             if (validateEmail(email)) {
                 // check if username is already in use
@@ -181,7 +184,7 @@
                     function(output) {
                       if(output != "success") {
                           // username already in use
-                          result.html(output);
+                          result.html(output).css('color', 'red');
                           emailOkay = 0;
                       } else {
                           // username available and is in a valid format
