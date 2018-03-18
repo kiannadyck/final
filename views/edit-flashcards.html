@@ -97,14 +97,15 @@
 
     <div id='TextBoxesGroup' class="form-group">
         <div id="TextBoxDiv">
+
+            <p id="validationMessage" class="text-danger">Please enter both a question and an answer.</p>
+
             <label>Question: </label>
-            <!--<input type="text" class= "form-control" name="question[]" id="question" >-->
             <textarea class="form-control" id='question' name='question[]' rows="5" style="resize:none"></textarea>
 
             <br>
 
             <label>Answer: </label>
-            <!--<input type="text" class= "form-control" name="answer[]" id="answer" >-->
             <textarea class="form-control" id='answer' name='answer[]' rows="5" style="resize:none"></textarea>
 
             <br>
@@ -114,22 +115,77 @@
 
 </div> <!-- container -->
 
+<!--Confirmation Model-->
+<div class="modal fade" id="confirmation">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="confirmHeader">Remove</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" id="confirmBody">
+
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="confirmYes">Yes</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!--Success/Failure to Update Model-->
+<div class="modal fade" id="successFail">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="successFailHeader">Modal Heading</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body" id="successFailBody">
+                Modal body..
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
 <!-- Scripts -->
 <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+</script>
+
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
 <!-- popper -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <!-- bootstrap -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
 
-<!--jQuery Library-->
-<script src="http://code.jquery.com/jquery.js"></script>
 
 
-<!-- Work in Progress -->
+
 <script>
+    $("#validationMessage").hide();
     addUpdateHandler();
     removeHandler();
 
@@ -156,9 +212,7 @@
                     var answerText = answerTd.find(":input").val();
 
                     $.post(
-                        //script we want to visit
                         "models/edit.php",
-                        //data we want to pass(key-value)
                         {
                             pairId: pairId,
                             question: questionText,
@@ -166,13 +220,18 @@
                             action: "updateRow"
                         },
                         function (result) {
+                            $("#successFailHeader").text("Update Flashcard");
                             if (result == -1) {
-                                alert("Both question and answer fields cannot be empty.");
+                                // user input failed validation
+                                $("#successFailBody").text("Both question and answer fields cannot be empty.");
                             } else if (result == 0) {
-                                alert("Unsuccessful update");
+                                // flashcard unsuccessfully updated in database
+                                $("#successFailBody").text("Update was unsuccessful. Please try again later.");
                             } else {
-                                alert("Success!");
+                                // flashcard updated successfully in database
+                                $("#successFailBody").text("Flashcard updated successfully!");
                             }
+                            $("#successFail").modal("show");
                         });
 
                 });
@@ -189,9 +248,8 @@
             $(this).text("Save Flashcard to Deck");
             newPair();
         } else {
-            $(this).text("Add new Flashcard");
             savePair();
-        };
+        }
 
     });
 
@@ -200,25 +258,27 @@
         var deckId = $("#deckId").val();
 
         $.post(
-            //script we want to visit
             "models/edit.php",
-            //data we want to pass(key-value)
             {
                 deckName: deckName,
                 deckId: deckId,
                 action: "updateDeckName"
             },
             function (result) {
-
+                $("#successFailHeader").text("Update Deck Name");
                 //update name in database
                 if (result > 0) {
-                    alert("Deck name saved.");
+                    // Deck name successfully updated in database
+                    $("#successFailBody").text("Deck name updated successfully!");
                 }
                 else if (result < 0) {
-                    alert("Deck name cannot be empty");
+                    // Deck name entered by user fails validation
+                    $("#successFailBody").text("Deck name cannot be empty.");
                 } else {
-                    alert("Unsuccessful.");
+                    // Deck name unsuccessfully updated in database
+                    $("#successFailBody").text("Update was unsuccessful. Please try again later.");
                 }
+                $("#successFail").modal("show");
             });
 
     });
@@ -258,18 +318,39 @@
 
                     var table = $("table");
                     table.append(text + tdQ + tdA + buttons);
+
+                    /*Assign click events to buttons*/
                     removeHandler();
                     addUpdateHandler();
 
+                    /*Clear question and answer fields in preparation for next entered question*/
+                    $("#question").val("");
+                    $("#answer").val("");
+
+                    // Hide validation message if present
+                    $("#validationMessage").hide();
+
+                    /*Hide Question and Answer Fields until button clicked again*/
+                    $("#TextBoxDiv").hide();
+
+                    $("#addNew").text("Add new Flashcard");
                 }
                 else if (result < 0) {
-                    alert("Question and answer fields cannot be empty.");
+                    // Failed validation
+                    // alert("Question and answer fields cannot be empty.");
+                    $("#validationMessage").show();
+                    $("#addNew").text("Save Flashcard to Deck");
+
                 }
                 else {
-                    alert("Unsuccessful add");
+                    // Failed to add new flashcard to database
+                    $("#successFailHeader").text("Add Flashcard");
+                    $("#successFailBody").text("Addition of new flashcard was unsuccessful. Please try again later.");
+                    $("#successFail").modal("show");
+                    // alert("Unsuccessful add");
                 }
             });
-        $("#TextBoxDiv").hide();
+        // $("#TextBoxDiv").hide();
     }
 
     function removeHandler() {
@@ -285,31 +366,33 @@
                     var pairId = $(currentRow).attr('id');
 
                     //send confirmation if user wants to delete row
-                    var proceed = confirm("Are you sure you want to remove this row?");
+                    $("#confirmHeader").text("Remove Flashcard");
+                    $("#confirmBody").text("Are you sure you want to remove this flashcard?");
+                    $("#confirmation").modal("show");
 
-                    if (proceed) {
+                    $("#confirmYes").click(function(){
+                        $("#confirmation").modal("hide");
+
+                        /*Send delete request to database*/
                         $.post(
-                            //script we want to visit
                             "models/edit.php",
-                            //data we want to pass(key-value)
                             {
                                 pairId: pairId,
-
                                 action: "deleteRow"
                             },
-                            //what we do with result - display petname in p
                             function (result) {
-
-
-                                //remove row from browser if true
+                                //remove row from browser if true (flashcard successfully deleted from database)
                                 if (result) {
                                     currentRow.remove();
                                 }
                                 else {
-                                    alert("Unsuccessful remove");
+                                    // flashcard unsuccessfully removed from database
+                                    $("#successFailHeader").text("Remove Flashcard");
+                                    $("#successFailBody").text("Removal was unsuccessful. Please try again later.");
+                                    $("#successFail").modal("show");
                                 }
                             });
-                    }
+                    });
 
                 });
             }
@@ -320,33 +403,36 @@
         var deckId = $("#deckId").val();
 
         //send confirmation if user wants to delete row
-        var proceed = confirm("Are you sure you want to remove this deck?");
+        $("#confirmHeader").text("Delete Deck");
+        $("#confirmBody").text("Are you sure you want to delete this deck?");
+        $("#confirmation").modal("show");
 
-        if (proceed) {
+        $("#confirmYes").click(function(){
+            $("#confirmation").modal("hide");
+
             $.post(
-                //script we want to visit
                 "models/edit.php",
-                //data we want to pass(key-value)
                 {
                     deckId: deckId,
-
                     action: "deleteDeck"
                 },
-                //what we do with result - display petname in p
+
                 function (result) {
 
-
                     if (result) {
-                        //redirect to home
+                        //redirect to home if deck successfully deleted from database
                         window.location.replace("328/final/");
                     }
                     else {
-                        alert("Unsuccessful remove");
+                        // message if failure to remove from database
+                        $("#successFailHeader").text("Delete Deck");
+                        $("#successFailBody").text("Deletion was unsuccessful. Please try again later.");
+                        $("#successFail").modal("show");
                     }
                 });
-            // use keyword this to target clicked button
-            // removeHandler();
-        }
+
+        });
+
     });
 
 
