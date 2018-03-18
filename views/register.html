@@ -95,10 +95,16 @@
 
 
 <!-- Scripts -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
 
 <!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+</script>
+
 <!-- popper -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <!-- bootstrap -->
@@ -130,7 +136,7 @@
                // document.getElementById('submit').disabled = true;
             }
         } else {
-            //if either password feld is empty, disable submit
+            //if either password field is empty, disable submit
             $('#message').hide();
             count = 0;
             submitOkay();
@@ -156,9 +162,27 @@
         result.html("");
         if(email != "") {
             if (validateEmail(email)) {
-                result.html(email + " is valid").css("color", "green");
-               // document.getElementById('submit').disabled = false;
-                emailOkay = 1;
+                // check if username is already in use
+                $.post(
+                  "models/checkUsername.php",
+                    {email : email},
+                    function(output) {
+                      if(output != "success") {
+                          // username already in use
+                          result.html(output);
+                          emailOkay = 0;
+                      } else {
+                          // username available and is in a valid format
+                          result.html(email + " is valid").css("color", "green");
+                          emailOkay = 1;
+                      }
+                    }
+                );
+
+                // result.html(email + " is valid").css("color", "green");
+
+                // document.getElementById('submit').disabled = false;
+                // emailOkay = 1;
                 submitOkay();
             } else {
                 result.html(email + " is not valid").css("color", "red");
