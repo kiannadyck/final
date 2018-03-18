@@ -122,19 +122,31 @@
         if($('#password').val() != "" && $('#password2').val != "") {
             $('#message').show();
 
-            if ($('#password').val() == $('#password2').val()) {
-                $('#message').html('Passwords match').css('color', 'green');
-                //user allowed to click submit button
-               // document.getElementById('submit').disabled = false;
-                count = 1;
-                submitOkay();
+            // validate password complexity
+            var meetsRequiredComplexity = validatePassword($('#password').val());
+
+            if(meetsRequiredComplexity) {
+                if ($('#password').val() == $('#password2').val()) {
+                    $('#message').html('Passwords match').css('color', 'green');
+                    //user allowed to click submit button
+                    // document.getElementById('submit').disabled = false;
+                    count = 1;
+                    submitOkay();
+                } else {
+                    $('#message').html('Passwords do not match').css('color', 'red');
+                    count = 0;
+                    submitOkay();
+                    // passwords don't match, user cannot click submit
+                    // document.getElementById('submit').disabled = true;
+                }
             } else {
-                $('#message').html('Passwords do not match').css('color', 'red');
+                // does not meet password complexity requirements
+                $('#message').html('Password must be at least six characters long and contain an uppercase letter, ' +
+                    'lowercase letter, number, and symbol').css('color', 'red');
                 count = 0;
                 submitOkay();
-                // passwords don't match, user cannot click submit
-               // document.getElementById('submit').disabled = true;
             }
+
         } else {
             //if either password field is empty, disable submit
             $('#message').hide();
@@ -207,6 +219,37 @@
         }
     }
 
+    function validatePassword(password)
+    {
+        // check if at least one digit is in password
+        var digit = '\\d+';
+        // check if at least one lowercase
+        var lowercase = '[a-z]+';
+        // check for uppercase
+        var uppercase = '[A-Z]+';
+        //check for symbol
+        var symbol = '[!"#\$%&\'\(\)\*\+,\-\.\/\:\;\<=\>\?@\[\\\]\^_\`\{\|\}~]+'
+
+        var digitRegex = new RegExp(digit);
+        var d = password.search(digitRegex);
+
+        var lowerRegex = new RegExp(lowercase);
+        var l = password.search(lowerRegex);
+
+        var upperRegex = new RegExp(uppercase);
+        var u = password.search(upperRegex);
+
+        var symbolRegex = new RegExp(symbol);
+        var s = password.search(symbolRegex);
+
+        if(d >= 0 && l >= 0 && u >= 0 && s>=0 && password.length >= 6) {
+            return true; // this password is good
+        }
+
+        return false;
+
+    }
+
     /*$(document).ready(function () {
         $("#password").keyup(checkPW);
     });
@@ -257,6 +300,7 @@
         var n = pw.search(regex);
         return n >= 0;
     }
+
 */
 </script>
 </body>
