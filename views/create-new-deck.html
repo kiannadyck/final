@@ -60,16 +60,21 @@
 
         <div id='TextBoxesGroup' class="form-group">
             <div id="TextBoxDiv1">
-                <label>Question #1 : </label> <input type='text' class= "form-control" id='question1' name='question[]' ><br/>
+                <label>Question #1 : </label>
+                <textarea class="form-control" id='question1' name='question[]' rows="5" style="resize:none"></textarea> <br>
+
+                <label>Answer #1 : </label>
+                <textarea class="form-control" id='answer1' name='answer[]' rows="5" style="resize:none"></textarea> <br>
+                <!--<label>Question #1 : </label> <input type='text' class= "form-control" id='question1' name='question[]' ><br/>
                 <label>Answer #1 : </label> <input type='text' class= "form-control" id='answer1' name='answer[]' >
-                <br/>
+                <br/>-->
             <hr>
             </div>
         </div>
-        <input type='button' class= "btn btn-secondary" value='Add a Box' id='addButton'>
-        <input type='button' class= "btn btn-danger" value='Remove a Box' id='removeButton'>
+        <input type='button' class= "btn btn-secondary" value='Add a Flashcard' id='addButton'>
+        <input type='button' class= "btn btn-danger" value='Remove a Flashcard' id='removeButton'>
         <div class="text-right">
-            <input type='submit' class= "btn btn-primary text-right" value='Submit' name='submit'>
+            <input type='submit' class= "btn btn-primary text-right" value='Create Deck' name='submit'>
         </div>
     </form>
 
@@ -156,8 +161,14 @@
 
         // create label after newly created div
         newTextBoxDiv.after().html('<label>Question #'+ counter + ' : </label>' +
+            ' <textarea class="form-control" rows="5" style="resize:none" name="question[]" ' +
+            'id="question' + counter + '" ></textarea>' + '<br>' + '<label>Answer #'+ counter + ' : </label>' +
+            ' <textarea class="form-control" rows="5" style="resize:none" name="answer[] ' +
+            'id="answer' + counter + '" ></textarea>' + '<br/>' + '<hr>');
+
+        /*newTextBoxDiv.after().html('<label>Question #'+ counter + ' : </label>' +
             ' <input type="text" class= "form-control" name="question[]" id="question' + counter + '" >' + '<br>' + '<label>Answer #'+ counter + ' : </label>' +
-            ' <input type="text" class= "form-control" name="answer[]" id="answer' + counter + '" >' + '<br/>' + '<hr>');
+            ' <input type="text" class= "form-control" name="answer[]" id="answer' + counter + '" >' + '<br/>' + '<hr>');*/
 
         // append new div to TextBoxesGroup
         newTextBoxDiv.appendTo("#TextBoxesGroup");
@@ -167,8 +178,8 @@
     });
 
     $("#removeButton").click(function () {
-        if(counter = 1){
-            alert("No more textboxes to remove");
+        if(counter == 1){
+            alert("No more flashcards to remove");
             return false;
         }
 
