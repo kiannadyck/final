@@ -50,6 +50,7 @@ if($action == "deleteRow") {
 //update deck name
 } else if ($action == "updateDeckName") {
     if(!empty($deckName)){
+
         echo updateDeckName($deckId, $deckName);
     } else {
         echo -1;

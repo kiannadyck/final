@@ -21,12 +21,13 @@ class QuestionAnswer extends Deck
     /**
      * QuestionAnswer constructor.
      * @param $name string
+     * @param $id int deckId
      * @param $question array of questions
      * @param $answer array of answers
      */
-    function __construct($name, $question, $answer)
+    function __construct($name, $id, $question, $answer)
     {
-        parent::__construct($name);
+        parent::__construct($name, $id);
         $this->_question = $question;
         $this->_answer = $answer;
     }

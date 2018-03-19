@@ -48,30 +48,39 @@
     <!-- Main Content -->
 
     <div class="container">
-        <div>
+
         <form action="#" method="post">
+        <div>
+            <check if =" {{ @noDecks }}">
+                <true> <h3 class="text-info">{{ @noDecks }}</h3></true>
+
+                <false>
+                    <div class="form-group">
+                        <label for="decks">Choose a deck</label>&nbsp;&nbsp;&nbsp;<span class="text-danger">{{@choiceErr}}</span>
+                        <select class="form-control" name="deckOption" id="decks">
+
+                            <repeat group ='{{ @options }}' value="{{ @option }}">
+                                <option value="{{ @option['deckId'] }}" <check if="{{ @option['deckId'] == $_POST['deckOption']
+                        }}">selected</check>>{{ @option['deckName'] }}</option>
+                            </repeat>
+
+                        </select>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-3">
+                            <input type="radio" name="choice" value="edit" <check if="{{ @choice == edit }}">checked</check>> Edit &nbsp;
+                            <input type="radio" name="choice" value="play" <check if="{{ @choice == play }}">checked</check>> Play Deck
+                        </div>
+                        <div class="text-right col-9">
+                            <input class="btn btn-primary" type="submit" name="submit" value="Submit">
+                        </div>
+                    </div>
+                </false>
+            </check>
         <!--select dropdown for deck-->
-        <div class="form-group">
-            <label for="decks">Choose a deck</label>&nbsp;&nbsp;&nbsp;<span class="text-danger">{{@choiceErr}}</span>
-            <select class="form-control" name="deckOption" id="decks">
 
-                <repeat group ='{{ @options }}' value="{{ @option }}">
-                    <option value="{{ @option['deckId'] }}" <check if="{{ @option['deckId'] == $_POST['deckOption']
-                    }}">selected</check>>{{ @option['deckName'] }}</option>
-                </repeat>
+        </div>
 
-            </select>
-        </div>
-        </div>
-        <div class="row mb-3">
-            <div class="col-3">
-                <input type="radio" name="choice" value="edit" <check if="{{ @choice == edit }}">checked</check>> Edit &nbsp;
-                <input type="radio" name="choice" value="play" <check if="{{ @choice == play }}">checked</check>> Play Deck
-            </div>
-            <div class="text-right col-9">
-                <input class="btn btn-primary" type="submit" name="submit" value="Submit">
-            </div>
-        </div>
 
         </form>
         <br/>

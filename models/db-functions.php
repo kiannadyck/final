@@ -120,26 +120,26 @@ function addNewDeck($deckName, $userId)
 
 /**
  * Adds arrays of flashcard pairs into database.
- * @param $question string, question text
- * @param $answer string, answer text
- * @param $deckId int, deck id
+ * @param $deckObject QuestionAnswer object
  * @return bool true if added successfully into database, else false
  */
 
-function addPairsIntoDatabase($question, $answer, $deckId)
+function addPairsIntoDatabase($deckObject)
 {
     global $dbh;
 
     $isValid = true;
 
     //get both arrays from user object
-    $answerArray = $answer;
-    $questionArray = $question;
+    $answerArray = $deckObject->getAnswers();
+    $questionArray = $deckObject->getQuestions();
+    $deckId = $deckObject->getDeckId();
 
     //loop through array to assign variables
     for($i = 0; $i < sizeof($questionArray); $i++) {
         $question = $questionArray[$i];
         $answer = $answerArray[$i];
+
 
         $sql = "INSERT INTO flashcard (question, answer, deckId) VALUES (:question, :answer, :deckId)";
 

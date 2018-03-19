@@ -12,14 +12,26 @@
 class Deck
 {
     protected $name;
+    protected $id;
 
     /**
      * Creates a Deck object.
      * Deck constructor.
      * @param $name string
+     * @param $id int
      */
-    function __construct($name)
+    function __construct($name, $id)
     {
         $this-> name = $name;
+        $this-> id = $id;
+    }
+
+    /**
+     * Gets deck id.
+     * @return int id
+     */
+    function getDeckId()
+    {
+        return $this->id;
     }
 }

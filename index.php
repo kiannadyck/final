@@ -45,8 +45,12 @@ $f3->route('GET|POST /', function($f3) {
 
     // Retrieve decks for logged in user from database
     $result = getUserDecks($userId);
+    if ($result == null) {
+        $f3->set('noDecks', "Please create a new Deck =)");
+    }
 
     $decks = array();
+
     foreach($result as $deckOption) {
         $decks[$deckOption['deckId']] = $deckOption['deckName'];
     }
@@ -202,13 +206,12 @@ $f3->route('GET|POST /create', function($f3) {
                 // check if there are cards to add
                 if (sizeof($question) > 0) {
                     //create new object
-                    addPairsIntoDatabase($question, $answer, $deckId);
+                    $flashcardDeck = new QuestionAnswer($deckName, $deckId, $question, $answer);
+
+                    addPairsIntoDatabase($flashcardDeck);
                 }
                 $f3->reroute('/');
 
-            } else {
-                $invalidDeckName = $deckName . " is already taken. Create a deck with different name.";
-                $f3->set('invalidDeckName', $invalidDeckName);
             }
         }
     }
