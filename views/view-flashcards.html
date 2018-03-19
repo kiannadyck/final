@@ -1,6 +1,8 @@
 <!--
     Kianna Dyck
     Jen Shin
+    view-flashcards.html
+    Allows user to play a deck).
 -->
 
 <!DOCTYPE html>
@@ -84,70 +86,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <!-- bootstrap -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-<script>
-
-    // initial hide
-    $(".answer").hide();
-    // initial show answer
-    showAnswer();
-
-    var slideIndex = 1;
-    showDivs(slideIndex);
-
-    function plusDivs(n) {
-
-        showDivs(slideIndex += n);
-        $(".answer").hide(); // hide after transition to next card
-        $(".showAnswer").show(); // show button after clicking next or previous
-    }
-
-    function showDivs(n) {
-
-        var i;
-        var x = document.getElementsByClassName("card");
-        if (n == x.length) {
-            $("#next").hide()
-        } else {
-            $("#next").show()
-
-        }
-        if (n == 1) {
-            $("#previous").hide();
-        } else {
-            $("#previous").show();
-
-        }
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-
-        }
-        x[slideIndex-1].style.display = "block";
-
-    }
-
-    function showAnswer()
-    {
-        $(".showAnswer").click(function() {
-            $(".answer").show();
-            $(".showAnswer").hide();
-
-        });
-    }
-
-
-
-    $("#next").click(function() {
-        plusDivs(1);
-    });
-
-
-    $("#previous").click(function() {
-        plusDivs(-1);
-    });
-
-
-
-</script>
+<script src ="views/view.js"></script>
 </body>
 
 </html>

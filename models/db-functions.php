@@ -140,7 +140,6 @@ function addPairsIntoDatabase($deckObject)
         $question = $questionArray[$i];
         $answer = $answerArray[$i];
 
-
         $sql = "INSERT INTO flashcard (question, answer, deckId) VALUES (:question, :answer, :deckId)";
 
         // 2. prepare the statement
