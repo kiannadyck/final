@@ -90,6 +90,15 @@
             <input type="submit" class="btn btn-primary" id = "submit" name="submit" value="Create Account">
         </div>
     </form>
+
+    <p>Password must contain, at minimum:</p>
+    <ul>
+        <li>one lowercase letter</li>
+        <li>one uppercase letter</li>
+        <li>one number</li>
+        <li>one symbol</li>
+        <li>6 characters</li>
+    </ul>
 </div> <!-- container -->
 
 
@@ -115,18 +124,41 @@
     var count = 0;
     var emailOkay = 0;
 
-
-    //validate();
-    //confirm that password fields match, otherwise disable submit
-    // keyup
-    $('#password, #password2').on('blur', function () {
-        if($('#password').val() != "" && $('#password2').val != "") {
-            $('#message').show();
-
+    $('#password').on('keyup', function () {
+        if  ($('#password').val() != "") {
             // validate password complexity
-            var meetsRequiredComplexity = validatePassword($('#password').val());
+            var meetsRequiredComplexity = validatePassword();
+            if(!meetsRequiredComplexity) {
+                // does not meet password complexity requirements
+                $('#message').html('Password must be at least six characters long and contain an uppercase letter, ' +
+                    'lowercase letter, number, and symbol').css('color', 'red');
+                count = 0;
+                submitOkay();
+            } else {
+                $('#message').html("Password passes complexity requirements.").css('color', 'green');
+            }
 
-            if(meetsRequiredComplexity) {
+        } else { //empty field
+            $('#message').html("");
+        }
+    });
+
+   // if (meetsRequiredComplexity) {
+        //validate();
+        //confirm that password fields match, otherwise disable submit
+        // keyup
+        $('#password2').on('keyup', function () {
+          //  alert("on p2");
+
+
+            if ($('#password2').val() != "") {
+                $('#message').html("");
+
+            }
+            if ($('#password').val() != "" && $('#password2').val() != "") {
+                 $('#message').show();
+
+
                 if ($('#password').val() == $('#password2').val()) {
                     $('#message').html('Passwords match').css('color', 'green');
                     //user allowed to click submit button
@@ -141,21 +173,25 @@
                     // document.getElementById('submit').disabled = true;
                 }
             } else {
-                // does not meet password complexity requirements
-                $('#message').html('Password must be at least six characters long and contain an uppercase letter, ' +
-                    'lowercase letter, number, and symbol').css('color', 'red');
+                //if either password field is empty, disable submit
+                $('#message').hide();
                 count = 0;
                 submitOkay();
+                // document.getElementById('submit').disabled = true;
             }
+        });
+   /* } else if ($('#password').val() != "") {
 
-        } else {
-            //if either password field is empty, disable submit
-            $('#message').hide();
-            count = 0;
-            submitOkay();
-           // document.getElementById('submit').disabled = true;
-        }
-    });
+        // does not meet password complexity requirements
+        $('#message').html('Password must be at least six characters long and contain an uppercase letter, ' +
+            'lowercase letter, number, and symbol').css('color', 'red');
+        count = 0;
+        submitOkay();
+    } else {
+        $('#message').hide();
+        count = 0;
+        submitOkay();
+    }*/
 
 
     $(document).ready(function () {
@@ -188,7 +224,7 @@
                           emailOkay = 0;
                       } else {
                           // username available and is in a valid format
-                          result.html(email + " is valid").css("color", "green");
+                          result.html(email + " is valid.").css("color", "green");
                           emailOkay = 1;
                       }
                     }
@@ -200,7 +236,7 @@
                 // emailOkay = 1;
                 submitOkay();
             } else {
-                result.html(email + " is not valid").css("color", "red");
+                result.html(email + " is not a valid email.").css("color", "red");
                // document.getElementById('submit').disabled = true;
                 emailOkay = 0;
                 submitOkay();
@@ -222,34 +258,37 @@
         }
     }
 
-    function validatePassword(password)
+    function validatePassword()
     {
-        // check if at least one digit is in password
-        var digit = '\\d+';
-        // check if at least one lowercase
-        var lowercase = '[a-z]+';
-        // check for uppercase
-        var uppercase = '[A-Z]+';
-        //check for symbol
-        var symbol = '[!"#\$%&\'\(\)\*\+,\-\.\/\:\;\<=\>\?@\[\\\]\^_\`\{\|\}~]+'
+        var password = $('#password').val();
 
-        var digitRegex = new RegExp(digit);
-        var d = password.search(digitRegex);
+            // check if at least one digit is in password
+            var digit = '\\d+';
+            // check if at least one lowercase
+            var lowercase = '[a-z]+';
+            // check for uppercase
+            var uppercase = '[A-Z]+';
+            //check for symbol
+            var symbol = '[^\\w]';
+            //var symbol = '[!"#\$%&\'\(\)\*\+,\-\.\/\:\;\<=\>\?@\[\\\]\^_\`\{\|\}~]+';
 
-        var lowerRegex = new RegExp(lowercase);
-        var l = password.search(lowerRegex);
+            var digitRegex = new RegExp(digit);
+            var d = password.search(digitRegex);
 
-        var upperRegex = new RegExp(uppercase);
-        var u = password.search(upperRegex);
+            var lowerRegex = new RegExp(lowercase);
+            var l = password.search(lowerRegex);
 
-        var symbolRegex = new RegExp(symbol);
-        var s = password.search(symbolRegex);
+            var upperRegex = new RegExp(uppercase);
+            var u = password.search(upperRegex);
 
-        if(d >= 0 && l >= 0 && u >= 0 && s>=0 && password.length >= 6) {
-            return true; // this password is good
-        }
+            var symbolRegex = new RegExp(symbol);
+            var s = password.search(symbolRegex);
 
-        return false;
+            if (d >= 0 && l >= 0 && u >= 0 && s >= 0 && password.length >= 6) {
+                return true; // this password is good
+            }
+
+            return false;
 
     }
 
