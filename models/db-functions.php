@@ -8,11 +8,10 @@
  */
 
 // require database connection file
-//(probably need to change path)
 $j = "jshingre";
 $k = "kdyckgre";
 
-require ("/home/".$j."/final_config.php");
+require ("/home/".$k."/final_config.php");
 
 /**
  * Creates connection to database.
@@ -130,12 +129,14 @@ function addPairsIntoDatabase($deckObject)
 
     $isValid = true;
 
-    //get both arrays from user object
+    //get question and answer arrays from user object
     $answerArray = $deckObject->getAnswers();
     $questionArray = $deckObject->getQuestions();
+
+    // get deckId from userObject
     $deckId = $deckObject->getDeckId();
 
-    //loop through array to assign variables
+    //loop through array and insert each flashcard into database
     for($i = 0; $i < sizeof($questionArray); $i++) {
         $question = $questionArray[$i];
         $answer = $answerArray[$i];
@@ -198,7 +199,6 @@ function getUserDecks($userId)
     global $dbh;
 
     // 1. define the query
-    // SELECT deckId, deckName FROM decks WHERE userId = 4
     $sql = "SELECT deckId, deckName FROM decks WHERE userId = :userId";
 
     // 2. prepare the statement
@@ -229,7 +229,6 @@ function getDeckFlashcards($deckId)
     global $dbh;
 
     // 1. define the query
-    // SELECT pairId, question, answer FROM flashcard WHERE deckId = 25
     $sql = "SELECT pairId, question, answer FROM flashcard WHERE deckId = :deckId";
 
     // 2. prepare the statement
@@ -256,18 +255,16 @@ function getAllUsers()
 {
     global $dbh;
 
-    // 1. define the query
+    // define the query
     $sql = "SELECT email FROM loginCredentials";
 
-    // 2. prepare the statement
+    // prepare the statement
     $statement = $dbh->prepare($sql);
 
-    // 3. bind parameters
-
-    // 4. execute the statement
+    // execute the statement
     $statement->execute();
 
-    // 5. Return the result
+    // Return the result
     $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     return $result;
@@ -276,18 +273,24 @@ function getAllUsers()
 /**
  * Deletes a question answer pair from database.
  * @param $pairId int, pair id
+ * @return bool
  */
 function deleteRow($pairId)
 
 {
-    //connect to db
     global $dbh;
 
     $select = "DELETE from flashcard WHERE pairId=:pairId";
+
+    // prepare statement
     $statement = $dbh->prepare($select);
+
+    // bind parameters
     $statement->bindValue(':pairId', $pairId);
 
+    // execute statement
     $success = $statement->execute();
+
     return $success;
 }
 
@@ -303,12 +306,18 @@ function updateRow($pairId, $question, $answer)
     global $dbh;
 
     $select = "UPDATE flashcard SET question = :question, answer = :answer WHERE pairId=:pairId";
+
+    // prepare statement
     $statement = $dbh->prepare($select);
+
+    // bind parameters
     $statement->bindValue(':pairId', $pairId);
     $statement->bindValue(':answer', $answer);
     $statement->bindValue(':question', $question);
 
+    // execute statement
     $success = $statement->execute();
+
     return $success;
 }
 
@@ -322,11 +331,17 @@ function updateDeckName($deckId, $deckName)
 
 {
     global $dbh;
+
     $select = "UPDATE decks SET deckName = :deckName WHERE deckId = :deckId";
+
+    // prepare statement
     $statement = $dbh->prepare($select);
+
+    // bind parameters
     $statement->bindValue(':deckId', $deckId);
     $statement->bindValue(':deckName', $deckName);
 
+    // execute statement
     $success = $statement->execute();
     return $success;
 }
@@ -341,21 +356,32 @@ function deleteDeck($deckId)
 {
     global $dbh;
 
-    //delete flashcards
+    //delete flashcards from deck
 
     $select = "DELETE from flashcard WHERE deckId=:deckId";
+
+    // prepare statement
     $statement = $dbh->prepare($select);
+
+    // bind parameter
     $statement->bindValue(':deckId', $deckId);
 
+    // execute statement
     $success = $statement->execute();
 
+    // if flashcards successfully deleted from deck, delete deck
     if ($success) {
-        //delete deck
         $select = "DELETE from decks WHERE deckId=:deckId";
+
+        // prepare statement
         $statement = $dbh->prepare($select);
+
+        // bind parameters
         $statement->bindValue(':deckId', $deckId);
 
+        // execute statement
         $success = $statement->execute();
     }
+
     return $success;
 }

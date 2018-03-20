@@ -7,14 +7,9 @@
  * @copyright 2018
  */
 
-// Error Reporting
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 // Require the autoload file
 require_once('vendor/autoload.php');
 
-//temp
 include_once('models/db-functions.php');
 include_once ('models/data-validation.php');
 
@@ -26,9 +21,6 @@ $f3 = Base::instance();
 
 // Connect to the database (temp)
 $dbh = connect();
-
-// Set debug level 0 = off, 3 = max level
-$f3->set('DEBUG', 3);
 
 // Define a default route (Home Page/View Decks Collection)
 $f3->route('GET|POST /', function($f3) {
@@ -62,9 +54,7 @@ $f3->route('GET|POST /', function($f3) {
     if(isset($_POST['submit'])) {
         // retrieve values from POST array
 
-        // this retrieves the value attribute stored in each option. This value is the deckId.
         $deck = $_POST['deckOption'];
-
         $choice = $_POST['choice'];
 
         // set deckId to a session to be grabbed by edit and play routes/pages

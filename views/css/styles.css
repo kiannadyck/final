@@ -1,0 +1,11 @@
+/*
+Kianna Dyck
+Jen Shin
+Styles.css
+Styles for Flashcards Web Application
+*/
+
+/*Textarea Styles*/
+textarea {
+    resize: none;
+}

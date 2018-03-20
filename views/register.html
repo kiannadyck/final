@@ -17,112 +17,120 @@
 
     <!-- CSS Files-->
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb"
+          crossorigin="anonymous">
 
 </head>
 
 <body>
 
-<!--nav bar-->
-<nav class="navbar navbar-expand-lg navbar-light bg-light m-3">
-    <a class="navbar-brand" href="./">Flashcards</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <check if ="{{ @_SESSION['userId'] }}">
-                <true>
-                    <a class="nav-item nav-link" href="./">Current Decks<span class="sr-only">(current)</span></a>
-                    <a class="nav-item nav-link" href="./create">Create New Deck</a>
-                    <a class="nav-item nav-link" href="./logout">Logout</a>
-                </true>
-                <false>
-                    <a class="nav-item nav-link active" href="./register">Create an account</a>
-                    <a class="nav-item nav-link" href="./login">Login</a>
-                </false>
-            </check>
-
-        </div> <!-- navbar -->
-    </div> <!-- collapsible content div -->
-</nav> <!-- nav -->
-
-<div class="container">
-
-    <p class="lead text-center">Welcome to Flashcards, an online self-study tool designed to help exercise your memory
-        and knowledge in preparation for tests, quizzes, exams, or just for fun.</p>
-
-    <hr>
-
-    <h2 class="text-center">New User Registration</h2>
-    <p class="text-center text-info">Please fill out all fields.</p>
-    <form action="#" method="post">
-        <div class="form-group">
-            <!-- These need styles and validation -->
-            <label class="form-control-label" for="username">Username</label>&nbsp;
-            <span id='result'></span>
-            <input class="form-control" type="text" name="username" id="username" <check if="{{ isset($_POST['username']) }}"> value="{{ $_POST['username'] }}" </check>>
-
-            <!-- Error message for username email -->
-            <div>
-                <check if="{{!empty (@invalidEmail) }}">
-                    <p class="text-danger">{{ @invalidEmail }}</p>
+    <!--nav bar-->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light m-3">
+        <a class="navbar-brand" href="./">Flashcards</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <check if ="{{ @_SESSION['userId'] }}">
+                    <true>
+                        <a class="nav-item nav-link" href="./">Current Decks<span class="sr-only">(current)</span></a>
+                        <a class="nav-item nav-link" href="./create">Create New Deck</a>
+                        <a class="nav-item nav-link" href="./logout">Logout</a>
+                    </true>
+                    <false>
+                        <a class="nav-item nav-link active" href="./register">Create an account</a>
+                        <a class="nav-item nav-link" href="./login">Login</a>
+                    </false>
                 </check>
+
+            </div> <!-- navbar -->
+        </div> <!-- collapsible content div -->
+    </nav> <!-- nav -->
+
+    <div class="container">
+
+        <p class="lead text-center">Welcome to Flashcards, an online self-study tool designed to help exercise your memory
+            and knowledge in preparation for tests, quizzes, exams, or just for fun.</p>
+
+        <hr>
+
+        <h2 class="text-center">New User Registration</h2>
+        <p class="text-center text-info">Please fill out all fields.</p>
+        <form action="#" method="post">
+            <div class="form-group">
+                <!--Username-->
+                <label class="form-control-label" for="username">Username</label>&nbsp;
+                <span id='result'></span>
+                <input class="form-control" type="text" name="username" id="username"
+                <check if="{{ isset($_POST['username']) }}"> value="{{ $_POST['username'] }}" </check>>
+
+                <!-- Error message for username email -->
+                <div>
+                    <check if="{{!empty (@invalidEmail) }}">
+                        <p class="text-danger">{{ @invalidEmail }}</p>
+                    </check>
+                </div>
+
+                <!--Password and Password Confirmation-->
+                <label class="form-control-label" for="password">Password</label>
+                <input class="form-control" type="password" name="password" id="password">
+
+                <label class="form-control-label" for="password2">Confirm Password</label>
+                <input class="form-control" type="password" name="password2" id="password2">
+                <br/>
+                <span id="message"></span>
+
+
+                <!-- Error message for password -->
+                <div>
+                    <check if="{{!empty (@mismatchedPassword) }}">
+                        <p class="text-danger">{{ @mismatchedPassword }}</p>
+                    </check>
+                </div>
+
+
             </div>
-
-            <label class="form-control-label" for="password">Password</label>
-            <input class="form-control" type="password" name="password" id="password">
-
-            <label class="form-control-label" for="password2">Confirm Password</label>
-            <input class="form-control" type="password" name="password2" id="password2">
-            <br/>
-            <span id="message"></span>
-
-
-            <!-- Error message for password -->
-            <div>
-                <check if="{{!empty (@mismatchedPassword) }}">
-                    <p class="text-danger">{{ @mismatchedPassword }}</p>
-                </check>
+            <div class="text-right">
+                <input type="submit" class="btn btn-primary" id = "submit" name="submit" value="Create Account">
             </div>
+        </form>
 
-
-        </div>
-        <div class="text-right">
-            <input type="submit" class="btn btn-primary" id = "submit" name="submit" value="Create Account">
-        </div>
-    </form>
-
-    <p>Password must contain, at minimum:</p>
-    <ul>
-        <li>one lowercase letter</li>
-        <li>one uppercase letter</li>
-        <li>one number</li>
-        <li>one symbol</li>
-        <li>6 characters</li>
-    </ul>
-</div> <!-- container -->
+        <!--Password Complexity Rules-->
+        <p>Password must contain, at minimum:</p>
+        <ul>
+            <li>one lowercase letter</li>
+            <li>one uppercase letter</li>
+            <li>one number</li>
+            <li>one symbol</li>
+            <li>6 characters</li>
+        </ul>
+    </div> <!-- container -->
 
 
 
-<!-- Scripts -->
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>-->
+    <!-- Scripts -->
+    <!-- jQuery -->
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+    </script>
 
-<!-- jQuery -->
-<!--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>-->
-<script
-        src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous">
-</script>
+    <!-- popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
 
-<!-- popper -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-<!-- bootstrap -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
-<script src = "views/register.js">
+    <!-- bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
 
-</script>
+    <!--External Javascript-->
+    <script src = "views/js/register.js"></script>
 </body>
 
 </html>
