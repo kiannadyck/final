@@ -2,7 +2,7 @@
  * Jen Shin, Kianna Dyck
  * register.js
  * Javascript for registering a new user.
- * Does not allow submit button until all fields valid.
+ * JavaScript validation for register page.
  */
 
 $(document).ready(function () {
@@ -34,22 +34,16 @@ $('#password2').on('keyup', function () {
 
     if ($('#password2').val() != "") {
         $('#message').html("");
-
     }
     if ($('#password').val() != "" && $('#password2').val() != "") {
         $('#message').show();
 
-
         if ($('#password').val() == $('#password2').val()) {
             $('#message').html('Passwords match').css('color', 'green');
-            //user allowed to click submit button
-
         } else {
             $('#message').html('Passwords do not match').css('color', 'red');
-
         }
     } else {
-        //if either password field is empty, disable submit
         $('#message').hide();
 
     }
