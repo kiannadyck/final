@@ -10,6 +10,7 @@ $(document).ready(function () {
     $("#username").blur(validate);
 });
 
+
 // validates user input for password complexity
 $('#password').on('keyup', function () {
     if  ($('#password').val() != "") {
