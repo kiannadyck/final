@@ -4,9 +4,6 @@
  * Javascript for registering a new user.
  * Does not allow submit button until all fields valid.
  */
-document.getElementById('submit').disabled = true;
-var count = 0;
-var emailOkay = 0;
 
 $(document).ready(function () {
     // validates username
@@ -22,8 +19,7 @@ $('#password').on('keyup', function () {
             // does not meet password complexity requirements
             $('#message').html('Password must be at least six characters long and contain an uppercase letter, ' +
                 'lowercase letter, number, and symbol').css('color', 'red');
-            count = 0;
-            submitOkay();
+
         } else {
             $('#message').html("Password passes complexity requirements.").css('color', 'green');
         }
@@ -47,18 +43,15 @@ $('#password2').on('keyup', function () {
         if ($('#password').val() == $('#password2').val()) {
             $('#message').html('Passwords match').css('color', 'green');
             //user allowed to click submit button
-            count = 1;
-            submitOkay();
+
         } else {
             $('#message').html('Passwords do not match').css('color', 'red');
-            count = 0;
-            submitOkay();
+
         }
     } else {
         //if either password field is empty, disable submit
         $('#message').hide();
-        count = 0;
-        submitOkay();
+
     }
 });
 
@@ -93,24 +86,22 @@ function validate() {
                     if(output != "success") {
                         // username already in use
                         result.html(output).css('color', 'red');
-                        emailOkay = 0;
+
                     } else {
                         // username available and is in a valid format
                         result.html(email + " is valid.").css("color", "green");
-                        emailOkay = 1;
+
                     }
                 }
             );
 
-            submitOkay();
+
         } else {
             result.html(email + " is not a valid email.").css("color", "red");
-            emailOkay = 0;
-            submitOkay();
+
         }
     } else {
-        emailOkay = 0;
-        submitOkay();
+
     }
 }
 
@@ -149,18 +140,4 @@ function validatePassword()
 
     return false;
 
-}
-
-/**
- * If email username and password are both valid, then enable the submit button. Otherwise, button stays disabled.
- */
-function submitOkay() {
-    if (emailOkay > 0 && count > 0) {
-
-        document.getElementById('submit').disabled = false;
-
-    } else {
-        document.getElementById('submit').disabled = true;
-
-    }
 }
