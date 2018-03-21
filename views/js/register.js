@@ -7,59 +7,67 @@
 document.getElementById('submit').disabled = true;
 var count = 0;
 var emailOkay = 0;
+var complexity = 0;
 
 $(document).ready(function () {
     // validates username
     $("#username").blur(validate);
 });
 
+submitOkay();
 // validates user input for password complexity
 $('#password').on('keyup', function () {
-    if  ($('#password').val() != "") {
+    if ($('#password').val() !== "") {
         // validate password complexity
         var meetsRequiredComplexity = validatePassword();
-        if(!meetsRequiredComplexity) {
+        if (!meetsRequiredComplexity) {
             // does not meet password complexity requirements
-            $('#message').html('Password must be at least six characters long and contain an uppercase letter, ' +
+            $('#pmessage').html(' * Password must be at least six characters long and contain an uppercase letter, ' +
                 'lowercase letter, number, and symbol').css('color', 'red');
             count = 0;
             submitOkay();
         } else {
-            $('#message').html("Password passes complexity requirements.").css('color', 'green');
+            $('#pmessage').html(" * Password passes complexity requirements.").css('color', 'green');
+            $('#message').html("");
+
         }
 
     } else { //empty field
+        $('#pmessage').html("");
         $('#message').html("");
+
     }
+    submitOkay();
 });
 
-// validates that user input for both password fields match
 $('#password2').on('keyup', function () {
 
-    if ($('#password2').val() != "") {
-        $('#message').html("");
-
-    }
-    if ($('#password').val() != "" && $('#password2').val() != "") {
-        $('#message').show();
+// validates that user input for both password fields match
+    if ($('#password').val() !== "" && $('#password2').val() !== "") {
+     //   $('#message').show();
 
 
-        if ($('#password').val() == $('#password2').val()) {
+        if ($('#password').val() === $('#password2').val()) {
             $('#message').html('Passwords match').css('color', 'green');
             //user allowed to click submit button
             count = 1;
-            submitOkay();
+            //submitOkay();
         } else {
             $('#message').html('Passwords do not match').css('color', 'red');
             count = 0;
-            submitOkay();
+            //submitOkay();
         }
+
+        submitOkay();
+    } else if ($('#password').val() === "" || $('#password2').val() === "") {
+        $('#message').html("");
+
     } else {
         //if either password field is empty, disable submit
-        $('#message').hide();
-        count = 0;
-        submitOkay();
+        $('#message').html("");
+        $('#pmessage').html("");
     }
+    submitOkay();
 });
 
 
@@ -98,11 +106,14 @@ function validate() {
                         // username available and is in a valid format
                         result.html(email + " is valid.").css("color", "green");
                         emailOkay = 1;
-                    }
-                }
-            );
 
-            submitOkay();
+                    }
+                    submitOkay();
+
+                }
+
+        );
+
         } else {
             result.html(email + " is not a valid email.").css("color", "red");
             emailOkay = 0;
@@ -112,6 +123,7 @@ function validate() {
         emailOkay = 0;
         submitOkay();
     }
+    submitOkay();
 }
 
 /**
@@ -144,18 +156,26 @@ function validatePassword()
     var s = password.search(symbolRegex);
 
     if (d >= 0 && l >= 0 && u >= 0 && s >= 0 && password.length >= 6) {
+        complexity = 1;
+        submitOkay();
         return true; // this password is good
     }
-
+    complexity = 0;
+    submitOkay();
     return false;
 
 }
 
 /**
- * If email username and password are both valid, then enable the submit button. Otherwise, button stays disabled.
+ * If email username is unique, complexity of password and
+ * both password fields match,
+ * then enable the submit button.
+ * Otherwise, button stays disabled.
+ * Checked at every case (any changes to fields)
+ * and also when page first loads.
  */
 function submitOkay() {
-    if (emailOkay > 0 && count > 0) {
+    if (complexity > 0 && emailOkay > 0 && count > 0) {
 
         document.getElementById('submit').disabled = false;
 
