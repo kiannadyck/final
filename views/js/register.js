@@ -24,18 +24,21 @@ $('#password').on('keyup', function () {
             // does not meet password complexity requirements
             $('#pmessage').html(' * Password must be at least six characters long and contain an uppercase letter, ' +
                 'lowercase letter, number, and symbol').css('color', 'red');
-            count = 0;
-            submitOkay();
+            complexity = 0;
         } else {
             $('#pmessage').html(" * Password passes complexity requirements.").css('color', 'green');
             $('#message').html("");
-
+            complexity = 1;
         }
 
-    } else { //empty field
+    } else if ($('#password').val() === "" || $('#password2').val() === "") {
+            $('#pmessage').html("");
+            complexity = 0;
+
+    } else { //empty password field
         $('#pmessage').html("");
         $('#message').html("");
-
+        complexity = 0;
     }
     submitOkay();
 });
@@ -61,11 +64,13 @@ $('#password2').on('keyup', function () {
         submitOkay();
     } else if ($('#password').val() === "" || $('#password2').val() === "") {
         $('#message').html("");
+        count = 0;
 
     } else {
         //if either password field is empty, disable submit
         $('#message').html("");
         $('#pmessage').html("");
+        count = 0;
     }
     submitOkay();
 });
@@ -156,12 +161,10 @@ function validatePassword()
     var s = password.search(symbolRegex);
 
     if (d >= 0 && l >= 0 && u >= 0 && s >= 0 && password.length >= 6) {
-        complexity = 1;
-        submitOkay();
+
         return true; // this password is good
     }
-    complexity = 0;
-    submitOkay();
+
     return false;
 
 }
