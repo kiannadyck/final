@@ -64,6 +64,9 @@ $("#deleteDeck").click(function() {
     $("#confirmBody").text("Are you sure you want to delete this deck?");
     $("#confirmation").modal("show");
 
+    // remove previous click event from confirmYes if present
+    $("#confirmYes").off("click");
+
     $("#confirmYes").click(function(){
         $("#confirmation").modal("hide");
 
@@ -167,6 +170,10 @@ function removeHandler() {
                 $("#confirmBody").text("Are you sure you want to remove this flashcard?");
                 $("#confirmation").modal("show");
 
+                // remove previous click event from confirmYes if present
+                $("#confirmYes").off("click");
+
+                // add click event for confirmYes
                 $("#confirmYes").click(function(){
                     $("#confirmation").modal("hide");
 
