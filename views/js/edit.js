@@ -67,6 +67,7 @@ $("#deleteDeck").click(function() {
     // remove previous click event from confirmYes if present
     $("#confirmYes").off("click");
 
+
     $("#confirmYes").click(function(){
         $("#confirmation").modal("hide");
 
